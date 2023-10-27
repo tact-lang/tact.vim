@@ -23,7 +23,7 @@
 See the highlighting showcase below (uses `One Dark` color scheme).\
 Note, that you can [disable highlighting of identifiers](#highlighting), if you want to :)
 
-<img src=".github/SHOWCASE.png" alt="Highlighting showcase" width="70%" style="display:inline;" />
+<img src=".github/SHOWCASE.png" alt="Highlighting showcase" width="50%" style="display:inline;" />
 
 ## Installation
 
