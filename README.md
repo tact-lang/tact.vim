@@ -8,8 +8,6 @@
 
 ⚡ Tact is a new programming language for TON blockchain that is focused on efficiency and simplicity. It is designed to be easy to learn and use, and to be a good fit for smart contracts, because it is a statically typed language with a simple syntax and a powerful type system.
 
-Does whasd asda asd asd asd asd a asd asd asdasd asdasda asdasdas asdd as das asdasda asdasda asdadas asd asd asd asd asd asdasdasd ad asdas adasd asdasda asda sasdasdasdasda asdasdad asdasdasda assdasdasd assdasda sdasdsad asd asdasd asdasd asdasd asda dasdasdadasdasdas asdasdasdads
-
 ## Features
 
 - [Syntax highlighting](#highlighting), which closely follows Tact specification in its [Ohm grammar file](https://github.com/tact-lang/tact/blob/main/src/grammar/grammar.ohm)
