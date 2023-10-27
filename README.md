@@ -99,7 +99,7 @@ Steps:
 
 By default this plugin sets an `omnifunc` option to provide auto-completions by triggering <kbd>CTRL-x</kbd><kbd>CTRL-o</kbd> in INSERT mode. However, if you're using an LSP client for Tact language, it may overwrite this option and disable the completion and basic linting capabilities provided by this plugin alongside of it.
 
-In order to prevent that behaviour in such niche case, you may want to bind completion features of this plugin to a `competefunc` option (which is quite conveniently triggered by <kbd>CTRL-x</kbd><kbd>CTRL-u</kbd> in INSERT mode). Add the following to your `~/.vimrc` (or `~/_vimrc` on Windows) if you'd like to prefer and bind `completefunc` over `omnifunc`:
+In order to prevent that behaviour you may want to bind completion features of this plugin to a `competefunc` option (which is quite conveniently triggered by <kbd>CTRL-x</kbd><kbd>CTRL-u</kbd> in INSERT mode). Add the following to your `~/.vimrc` (or `~/_vimrc` on Windows) if you'd like to prefer and bind `completefunc` over `omnifunc`:
 
 ```vim
 " CTRL-x CTRL-u instead of CTRL-x CTRL-o
@@ -183,7 +183,7 @@ For the ease of omnicompletion usage, you may want to add this or similar bindin
 inoremap <silent> <c-space> <c-x><c-o>
 ```
 
-It's often useful to combine results from omnicompletion (<kbd>Ctrl-x</kbd><kbd>Ctrl-o</kbd>) with the regular keyword completion (<kbd>Ctrl-x</kbd><kbd>Ctrl-n</kbd>), as omnicompletion has no notion of declared identifiers, such as fields, constants or variables. However, it tries to find best context options, conditionally falling back to syntaxcomplete. As a final measure when there are no syntax matches available, omnicompletion triggers the built-in keyword completion automatically, without you pressing any extra keys! As always, if omnicompletion doesn't suit a particular use-case, try keyword one!
+At times when omnicompletion (<kbd>CTRL-x</kbd><kbd>CTRL-o</kbd>) can't complete much it fallbacks to keyword completion (<kbd>CTRL-x</kbd><kbd>CTRL-n</kbd>). But that's not always the case, so if omnicompletion doesn't show anything, try keyword one!
 
 ## Usage
 
