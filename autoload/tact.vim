@@ -1457,7 +1457,7 @@ function! tact#Complete(findstart, base) abort
           if l:buf_is_function_context == 0
             let l:buf_is_function_context = 1
             let l:buf_function_name = 'receive'
-            let l_buf_function_type = 'special'
+            let l:buf_function_type = 'special'
             let l:buf_function_definitions_before_current_line = l:scanned_body[2] " found definitions
 
             " adding function params here
@@ -1518,7 +1518,7 @@ function! tact#Complete(findstart, base) abort
           if l:buf_is_function_context == 0
             let l:buf_is_function_context = 1
             let l:buf_function_name = 'external'
-            let l_buf_function_type = 'special'
+            let l:buf_function_type = 'special'
             let l:buf_function_definitions_before_current_line = l:scanned_body[2] " found definitions
 
             " adding function params here
@@ -1579,7 +1579,7 @@ function! tact#Complete(findstart, base) abort
           if l:buf_is_function_context == 0
             let l:buf_is_function_context = 1
             let l:buf_function_name = 'bounced'
-            let l_buf_function_type = 'special'
+            let l:buf_function_type = 'special'
             let l:buf_function_definitions_before_current_line = l:scanned_body[2] " found definitions
 
             " adding function params here
@@ -1879,7 +1879,7 @@ function! tact#Complete(findstart, base) abort
           if l:buf_is_function_context == 0
             let l:buf_is_function_context = 1
             let l:buf_function_name = 'receive'
-            let l_buf_function_type = 'special'
+            let l:buf_function_type = 'special'
             let l:buf_function_definitions_before_current_line = l:scanned_body[2] " found definitions
 
             " adding function params here
@@ -1940,7 +1940,7 @@ function! tact#Complete(findstart, base) abort
           if l:buf_is_function_context == 0
             let l:buf_is_function_context = 1
             let l:buf_function_name = 'external'
-            let l_buf_function_type = 'special'
+            let l:buf_function_type = 'special'
             let l:buf_function_definitions_before_current_line = l:scanned_body[2] " found definitions
 
             " adding function params here
@@ -2001,7 +2001,7 @@ function! tact#Complete(findstart, base) abort
           if l:buf_is_function_context == 0
             let l:buf_is_function_context = 1
             let l:buf_function_name = 'bounced'
-            let l_buf_function_type = 'special'
+            let l:buf_function_type = 'special'
             let l:buf_function_definitions_before_current_line = l:scanned_body[2] " found definitions
 
             " adding function params here
@@ -2085,7 +2085,7 @@ function! tact#Complete(findstart, base) abort
           if l:buf_is_function_context == 0
             let l:buf_is_function_context = 1
             let l:buf_function_name = 'init'
-            let l_buf_function_type = 'special'
+            let l:buf_function_type = 'special'
             let l:buf_function_definitions_before_current_line = l:scanned_body[2] " found definitions
 
             " adding function params
@@ -2315,7 +2315,7 @@ function! tact#Complete(findstart, base) abort
   ""
 
   " in-contract/in-trait
-  if l:buf_is_function_context
+  if l:buf_is_function_context == 1
         \ && l:line_until_col =~# '\<self\..*$'
         \ && (l:buf_function_type ==# 'method' || l:buf_function_type ==# 'special')
     let l:options = []
@@ -2324,10 +2324,10 @@ function! tact#Complete(findstart, base) abort
     " basic self usage
     if l:line_until_col =~# '\<self\.\w*$'
       " trait or contract
-      if l:buf_is_trait_context
+      if l:buf_is_trait_context == 1
         call extend(l:options, keys(l:buf_trait_fields[l:buf_trait_name]))
         call extend(l:options, keys(l:buf_trait_methods[l:buf_trait_name]))
-      elseif l:buf_is_contract_context
+      elseif l:buf_is_contract_context == 1
         call extend(l:options, keys(l:buf_contract_fields[l:buf_contract_name]))
         call extend(l:options, keys(l:buf_contract_methods[l:buf_contract_name]))
       endif
@@ -2341,9 +2341,9 @@ function! tact#Complete(findstart, base) abort
       let l:type_arr = []
 
       " trait or contract
-      if l:buf_is_trait_context
+      if l:buf_is_trait_context == 1
         let l:returns = l:buf_trait_methods_returns[l:buf_trait_name]
-      elseif l:buf_is_contract_context
+      elseif l:buf_is_contract_context == 1
         let l:returns = l:buf_contract_methods_returns[l:buf_contract_name]
       endif
 
@@ -2377,9 +2377,9 @@ function! tact#Complete(findstart, base) abort
       let l:fields = {}
 
       " trait or contract
-      if l:buf_is_trait_context
+      if l:buf_is_trait_context == 1
         let l:fields = l:buf_trait_fields[l:buf_trait_name]
-      elseif l:buf_is_contract_context
+      elseif l:buf_is_contract_context == 1
         let l:fields = l:buf_contract_fields[l:buf_contract_name]
       endif
 
@@ -2412,7 +2412,7 @@ function! tact#Complete(findstart, base) abort
   endif
 
   " in extends function
-  if l:buf_is_function_context
+  if l:buf_is_function_context == 1
         \ && l:line_until_col =~# '\<self\.\w*$'
         \ && l:buf_function_type ==# 'extend'
     " if there are some issues, fallback to default completion
@@ -2448,7 +2448,7 @@ function! tact#Complete(findstart, base) abort
   endif
 
   " in global function
-  if l:buf_is_function_context
+  if l:buf_is_function_context == 1
         \ && l:line_until_col =~# '\<self\.\w*$'
         \ && l:buf_function_type ==# 'global'
     " if there are some issues, fallback to default completion
@@ -2484,7 +2484,7 @@ function! tact#Complete(findstart, base) abort
   endif
 
   " longer chains of nested self. calls
-  if l:buf_is_function_context && l:line_until_col =~# '\<self\..\{-}\.\w*$'
+  if l:buf_is_function_context == 1 && l:line_until_col =~# '\<self\..\{-}\.\w*$'
     return s:DotFallbackComplete(a:base, l:buf_extends_functions, l:buf_structs, l:buf_messages)
   endif
 
@@ -2496,7 +2496,7 @@ function! tact#Complete(findstart, base) abort
   ""
 
   " string literal
-  if l:buf_is_function_context && l:line_until_col =~# '".\{-}"\.\w*$'
+  if l:buf_is_function_context == 1 && l:line_until_col =~# '".\{-}"\.\w*$'
     " {{{3
     let l:compl = []
 
@@ -2519,7 +2519,7 @@ function! tact#Complete(findstart, base) abort
   endif
 
   " number literal
-  if l:buf_is_function_context && l:line_until_col =~# s:regexp_number_literal . '\.\w*$'
+  if l:buf_is_function_context == 1 && l:line_until_col =~# s:regexp_number_literal . '\.\w*$'
     " {{{3
     let l:compl = []
 
@@ -2542,7 +2542,7 @@ function! tact#Complete(findstart, base) abort
   endif
 
   " single non-function identifier
-  if l:buf_is_function_context && l:line_until_col =~# '\W*\<\w\+\.\w*$'
+  if l:buf_is_function_context == 1 && l:line_until_col =~# '\W*\<\w\+\.\w*$'
     " {{{3
     let l:identifier_name_arr = []
     silent! call substitute(l:buf_line, '\(\w\+\)\.\w*$', '\=add(l:identifier_name_arr,submatch(1))', '')
@@ -2598,7 +2598,7 @@ function! tact#Complete(findstart, base) abort
   endif
 
   " single function result
-  if l:buf_is_function_context && l:line_until_col =~# '\W*\<\w\+(.\{-})\.\w*$'
+  if l:buf_is_function_context == 1 && l:line_until_col =~# '\W*\<\w\+(.\{-})\.\w*$'
     " {{{3
     let l:identifier_name_arr = []
     silent! call substitute(l:buf_line, '\(\w\+\)(.\{-})\.\w*$', '\=add(l:identifier_name_arr,submatch(1))', '')
@@ -2661,7 +2661,7 @@ function! tact#Complete(findstart, base) abort
   endif
 
   " multiple identifiers or functions, any UFCS contexts
-  if l:buf_is_function_context && l:line_until_col =~# '\.\w*$'
+  if l:buf_is_function_context == 1 && l:line_until_col =~# '\.\w*$'
     return s:DotFallbackComplete(a:base, l:buf_extends_functions, l:buf_structs, l:buf_messages)
   endif
 
@@ -2672,7 +2672,7 @@ function! tact#Complete(findstart, base) abort
   " {{{2
   ""
 
-  if l:buf_is_function_context
+  if l:buf_is_function_context == 1
     let l:options = keys(s:tact_globals)
       \ + keys(s:tact_stdlib_functions)
       \ + keys(l:buf_global_constants)
@@ -2723,7 +2723,7 @@ function! tact#Complete(findstart, base) abort
   " {{{2
   ""
 
-  if l:buf_is_trait_context || l:buf_is_contract_context
+  if l:buf_is_trait_context == 1 || l:buf_is_contract_context == 1
     let l:compl = []
 
     if !exists('g:tact_disable_abbreviations')
@@ -2738,7 +2738,8 @@ function! tact#Complete(findstart, base) abort
       return s:FallbackComplete(a:findstart, a:base)
     endif
 
-    return l:compl
+    " reusing all the syntaxmatches alongside abbreviations
+    return l:compl + syntaxcomplete#Complete(a:findstart, a:base)
   endif
 
   " }}}2
@@ -2775,9 +2776,7 @@ function! tact#Complete(findstart, base) abort
   endif
 
   " reusing all the syntaxmatches alongside abbreviations
-  let l:syntaxcompletions = syntaxcomplete#Complete(a:findstart, a:base)
-
-  return l:compl + l:syntaxcompletions
+  return l:compl + syntaxcomplete#Complete(a:findstart, a:base)
 
   " }}}2
 
