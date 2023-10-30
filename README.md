@@ -15,8 +15,7 @@
 - [Basic indentation & folding support](#folding)
 - [Compiler integration support](#usage)
 - [Abbreviations](#abbreviations) in INSERT mode
-- Auto-imports of stdlib traits for contracts once you type them!
-- Omnicompletion (omnifunc) support of static (global) and extension (methods on types) functions from stdlib, and all of the basic grammar \
+- [Auto-completion](#completion) (omnifunc/completefunc) support of static (global) and extension (methods on types) functions from stdlib, and all of the basic grammar \
   (use `ctrl-x ctrl-o` to trigger it or setup shortcuts as you wish)
 - Basic linting, which automatically triggers on omnicompletion. Don't forget to close your braces {}, parenthesis () and names, or use keyword completion instead ;)
 
@@ -199,6 +198,12 @@ Wish you good luck and fun exploring Tact! ⚡
 - [Official Website](https://tact-lang.org/)
 - Discussion Group in [Telegram](https://t.me/tactlang)
 - [X/Twitter](https://twitter.com/tact_language)
+
+## Credits
+
+Based on [The Open Network](https://ton.org).
+
+Built with 🤍 by [Novus Nota](https://github.com/novusnota).
 
 ## License
 
