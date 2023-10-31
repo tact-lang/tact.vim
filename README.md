@@ -35,13 +35,13 @@ More about Vim's built-in package manager: [`:help packages`](https://vimhelp.or
 For Linux/macOS:
 
 ```sh
-git clone 'https://github.com/novusnota/tact.vim.git' '~/.vim/pack/novusnota/start/tact'
+git clone 'https://github.com/tact-lang/tact.vim.git' '~/.vim/pack/novusnota/start/tact'
 ```
 
 For Windows/PowerShell:
 
 ```powershell
-git clone 'https://github.com/novusnota/tact.vim.git' $HOME\vimfiles\pack\novusnota\start\tact
+git clone 'https://github.com/tact-lang/tact.vim.git' $HOME\vimfiles\pack\novusnota\start\tact
 ```
 
 Don't forget to restart Vim after :)
@@ -60,7 +60,7 @@ Steps:
    ```vim
    call vundle#begin()
      " ...
-     Plugin 'novusnota/tact.vim'
+     Plugin 'tact-lang/tact.vim'
      " ...
    call vundle#end()
    ```
@@ -82,7 +82,7 @@ Steps:
    ```vim
    call plug#begin()
      "...
-     Plug 'novusnota/tact.vim'
+     Plug 'tact-lang/tact.vim'
      "...
    call plug#end()
    ```
@@ -175,12 +175,14 @@ Simply run `:Tact` command to try to compile using Tacts' compiler and look for 
 
 ### Miscellaneous
 
-For the ease of omnicompletion usage, you may want to add this or similar bindings:
+For the ease of omnicompletion usage, you may want to add this or similar bindings, but they are not obligatory to use the plugin:
 
 ```vim
 " Open omnicompletion menu on ctrl-space
 inoremap <silent> <c-space> <c-x><c-o>
 ```
+
+Note, that on macOS there's a default system-wide keyboard shortcut for <kbd>Ctrl</kbd><kbd>Space</kbd> (`^space`). You may want to change it to be <kbd>Cmd</kbd><kbd>Space</kbd> instead or use the different binding in Vim.
 
 At times when omnicompletion (<kbd>CTRL-x</kbd><kbd>CTRL-o</kbd>) can't complete much it fallbacks to keyword completion (<kbd>CTRL-x</kbd><kbd>CTRL-n</kbd>). But that's not always the case, so if omnicompletion doesn't show anything, try keyword one!
 
