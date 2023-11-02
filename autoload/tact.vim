@@ -2665,6 +2665,11 @@ function! tact#Complete(findstart, base) abort
     return s:DotFallbackComplete(a:base, l:buf_extends_functions, l:buf_structs, l:buf_messages)
   endif
 
+  " end-of-line dot placement style
+  if l:buf_is_function_context == 1 && l:lnum > 1 && s:TrimLine(getline(l:lnum - 1)) =~# '.$'
+    return s:DotFallbackComplete(a:base, l:buf_extends_functions, l:buf_structs, l:buf_messages)
+  endif
+
   " }}}2
 
   ""
