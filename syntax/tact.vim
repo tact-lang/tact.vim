@@ -61,6 +61,14 @@ syn region tactNativeIdentifier
     \ start="(" end=")" contains=tactNativeIdentifierName
     \ keepend skipwhite skipempty
 syn match tactNativeIdentifierName contained ".*"
+syn match tactNativeInterface
+    \ "@\<interface\>" nextgroup=tactNativeInterfaceIdentifier skipwhite
+syn region tactNativeInterfaceIdentifier
+    \ contained matchgroup=tactNativeFunctionParens
+    \ start="(" end=")" contains=tactNativeInterfaceIdentifierName
+    \ keepend skipwhite skipempty
+syn region tactNativeInterfaceIdentifierName
+    \ oneline start=+\z(["]\)+ end=+\z1+ contains=tactSpecialChar keepend
 
 " Types & Structures
 syn keyword tactType
@@ -98,6 +106,8 @@ syn region tactString
     \ oneline start=+\z(["]\)+ end=+\z1+ contains=tactSpecialChar keepend
 syn match tactDecNumber "\<\d\+\>"
 syn match tactHexNumber "\<0[xX][0-9a-fA-F]\+\>"
+syn match tactOctNumber "\<0[oO][0-7]\+\>"
+syn match tactBinNumber "\<0[bB][01]\+\>"
 syn keyword tactBool true false
 
 " }}}1
@@ -130,6 +140,8 @@ endif
 hi def link tactString String
 hi def link tactDecNumber Number
 hi def link tactHexNumber Number
+hi def link tactOctNumber Number
+hi def link tactBinNumber Number
 hi def link tactBool Boolean
 
 " Identifiers & Function names
@@ -150,6 +162,8 @@ hi def link tactContainedAs Keyword
 hi def link tactImport Include
 hi def link tactNativeFunction Macro
 hi def link tactNativeIdentifierName PreProc
+hi def link tactNativeInterface Macro
+hi def link tactNativeInterfaceIdentifierName String
 
 " Types & Structures
 hi def link tactType Type

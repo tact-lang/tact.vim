@@ -204,7 +204,7 @@ let s:regexp_map_no_right_angle_bracket = '\<map\s*<\s*'
       \ . s:regexp_type_as
       \ . '\s*'
 let s:regexp_bounced_no_right_angle_bracket = '\<bounced\s*<\s*' . s:regexp_type_literal . '\s*'
-let s:regexp_number_literal = '\%((\d\+)\|(0[xX]\x\+)\)'
+let s:regexp_number_literal = '\%((\d\+)\|(0[xX]\x\+)\|(0[oO]\o\+)\|(0[bB][01]\+)\)'
 
 " }}}1
 
@@ -1315,7 +1315,7 @@ function! tact#Complete(findstart, base) abort
     endif
 
     " trait
-    if l:buf_line =~# '^trait\s\+\w\+'
+    if l:buf_line =~# '^\%(@interface\s*(.\{-})\s*\)\?trait\s\+\w\+'
       " {{{3
 
       " if it's the line under cursor
@@ -1326,7 +1326,7 @@ function! tact#Complete(findstart, base) abort
 
       " parse the name
       let l:trait_name_arr = []
-      silent! call substitute(l:buf_line, '^trait\s\+\(\w\+\)', '\=add(l:trait_name_arr,submatch(1))', '')
+      silent! call substitute(l:buf_line, '^\%(@interface\s*(.\{-})\s*\)\?trait\s\+\(\w\+\)', '\=add(l:trait_name_arr,submatch(1))', '')
 
       if empty(l:trait_name_arr)
         call s:ErrorMsg('Parse error of the trait name on line ' . l:buf_i)
@@ -1743,7 +1743,7 @@ function! tact#Complete(findstart, base) abort
     endif
 
     " contract
-    if l:buf_line =~# '^contract\s\+\w\+'
+    if l:buf_line =~# '^\%(@interface\s*(.\{-})\s*\)\?contract\s\+\w\+'
       " {{{3
 
       " if it's the line under cursor
@@ -1754,7 +1754,7 @@ function! tact#Complete(findstart, base) abort
 
       " parse the name
       let l:contract_name_arr = []
-      silent! call substitute(l:buf_line, '^contract\s\+\(\w\+\)', '\=add(l:contract_name_arr,submatch(1))', '')
+      silent! call substitute(l:buf_line, '^\%(@interface\s*(.\{-})\s*\)\?contract\s\+\(\w\+\)', '\=add(l:contract_name_arr,submatch(1))', '')
 
       if empty(l:contract_name_arr)
         call s:ErrorMsg('Parse error of the contract name on line ' . l:buf_i)
