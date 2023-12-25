@@ -3,12 +3,12 @@
 " Maintainer: Novus Nota
 
 " Don't source twice
-if exists('b:did_ftplugin')
+if exists("b:did_ftplugin")
   finish
 endif
 
 " Set Tact defaults if variable is set
-if exists('g:tact_style_guide')
+if exists("g:tact_style_guide")
   setlocal expandtab
   setlocal shiftwidth=4
   setlocal tabstop=4
@@ -23,7 +23,7 @@ setlocal comments=s1:/*,mb:*,ex:*/,://
 setlocal formatoptions+=crqn
 
 " Setting completefunc (CTRL-x CTRL-u in INSERT mode)
-if exists('g:tact_prefer_completefunc')
+if exists("g:tact_prefer_completefunc")
   setlocal completefunc=tact#Complete
 else
   " ...or omnifunc (CTRL-x CTRL-o in INSERT mode)
@@ -32,8 +32,8 @@ endif
 
 " Misc.
 setlocal matchpairs+="(:),{:},[:],<:>"
-let s:win_sep = (has('win32') || has('win64')) ? '/' : ''
-if exists('+shellslash')
+let s:win_sep = (has("win32") || has("win64")) ? '/' : ''
+if exists("+shellslash")
   setlocal shellslash
 endif
 let &l:errorformat =

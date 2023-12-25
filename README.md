@@ -4,7 +4,7 @@
   <img src=".github/BANNER.png" alt="Tact.Vim"/>
 </center>
 
-🚀 Adds syntax highlighting, grammar completion and miscellaneous support for the [Tact programming language](https://tact-lang.org/) to Vim 8+.
+🚀 Adds syntax highlighting, grammar completion and miscellaneous support for the [Tact programming language](https://tact-lang.org/) to Vim 8+ and Neovim.
 
 ⚡ Tact is a new programming language for TON blockchain that is focused on efficiency and simplicity. It is designed to be easy to learn and use, and to be a good fit for smart contracts, because it is a statically typed language with a simple syntax and a powerful type system.
 
@@ -51,7 +51,7 @@ Don't forget to restart Vim after :)
 <details>
 <summary>Vundle</summary>
 
-Info about Vundle: [Vundle repository](https://github.com/VundleVim/Vundle.vim).
+Info about it: [Vundle repository](https://github.com/VundleVim/Vundle.vim).
 
 Steps:
 1. Add `tact.vim` to your plugin list in `~/.vimrc` (or `~/_vimrc` on Windows) by inserting
@@ -73,7 +73,7 @@ Steps:
 <details>
 <summary>vim-plug</summary>
 
-Info about vim-plug: [vim-plug repository](https://github.com/junegunn/vim-plug).
+Info about it: [vim-plug repository](https://github.com/junegunn/vim-plug).
 
 Steps:
 1. Add `tact.vim` to your plugin list in `~/.vimrc` (or `~/_vimrc` on Windows) by inserting
@@ -92,6 +92,27 @@ Steps:
 
 </details>
 
+<details>
+<summary>lazy.nvim (Neovim-only)</summary>
+
+Info about it:
+- [lazy.nvim repository](https://github.com/folke/lazy.nvim).
+- [Installation of lazy.nvim](https://github.com/folke/lazy.nvim#-installation)
+
+Steps:
+1. Add `tact.vim` to your lazy.nvim setup in `~/.config/nvim/init.lua` (or `~/AppData/Local/nvim/init.lua` on Windows):
+
+   ```lua
+    require('lazy').setup({
+      -- ...
+      { 'tact-lang/tact.vim', },
+      -- ...
+    }, {})
+   ```
+2. Run `:Lazy`.
+
+</details>
+
 ## Configuration
 
 ### Completion
@@ -105,6 +126,32 @@ In order to prevent that behaviour you may want to bind completion features of t
 let g:tact_prefer_completefunc = 1
 ```
 
+<details>
+<summary>Neovim-only</summary>
+
+```lua
+vim.g.tact_prefer_completefunc = 1
+```
+
+Alternatively, add the following to the `init` key of your `lazy.nvim` config:
+
+```lua
+require('lazy').setup({
+  -- ...
+  {
+    'tact-lang/tact.vim',
+    init = function()
+      -- ...
+      vim.g.tact_prefer_completefunc = 1
+      -- ...
+    end,
+  },
+  -- ...
+}, {})
+```
+
+</detail>
+
 ### Indentation
 
 Add the following to your `~/.vimrc` (or `~/_vimrc` on Windows) to enable preferred indentation style for Tact:
@@ -112,6 +159,32 @@ Add the following to your `~/.vimrc` (or `~/_vimrc` on Windows) to enable prefer
 ```vim
 let g:tact_style_guide = 1
 ```
+
+<details>
+<summary>Neovim-only</summary>
+
+```lua
+vim.g.tact_style_guide = 1
+```
+
+Alternatively, add the following to the `init` key of your `lazy.nvim` config:
+
+```lua
+require('lazy').setup({
+  -- ...
+  {
+    'tact-lang/tact.vim',
+    init = function()
+      -- ...
+      vim.g.tact_style_guide = 1
+      -- ...
+    end,
+  },
+  -- ...
+}, {})
+```
+
+</detail>
 
 ### Highlighting
 
@@ -121,11 +194,63 @@ If you want to disable highlighting of identifiers: variables and constants (but
 let g:tact_blank_identifiers = 1
 ```
 
+<details>
+<summary>Neovim-only</summary>
+
+```lua
+vim.g.tact_blank_identifiers = 1
+```
+
+Alternatively, add the following to the `init` key of your `lazy.nvim` config:
+
+```lua
+require('lazy').setup({
+  -- ...
+  {
+    'tact-lang/tact.vim',
+    init = function()
+      -- ...
+      vim.g.tact_blank_identifiers = 1
+      -- ...
+    end,
+  },
+  -- ...
+}, {})
+```
+
+</detail>
+
 To disable highlighting of structures (names of traits, messages, contracts and structs), add the following:
 
 ```vim
 let g:tact_blank_structures = 1
 ```
+
+<details>
+<summary>Neovim-only</summary>
+
+```lua
+vim.g.tact_blank_structures = 1
+```
+
+Alternatively, add the following to the `init` key of your `lazy.nvim` config:
+
+```lua
+require('lazy').setup({
+  -- ...
+  {
+    'tact-lang/tact.vim',
+    init = function()
+      -- ...
+      vim.g.tact_blank_structures = 1
+      -- ...
+    end,
+  },
+  -- ...
+}, {})
+```
+
+</detail>
 
 ### Formatting
 
@@ -142,6 +267,18 @@ augroup tact_folding
     au FileType tact setlocal foldmethod=syntax
 augroup END
 ```
+
+<details>
+<summary>Neovim-only</summary>
+
+Make a `~/.config/nvim/after/ftplugin` directory (`~/AppData/Local/nvim/after/ftplugin`) and put the file `tact.lua` in it with the following contents:
+
+```lua
+vim.opt.foldmethod = "syntax"
+vim.opt.foldenable = false  -- disables automatic folding on file opening
+```
+
+</detail>
 
 ### Abbreviations
 
@@ -169,6 +306,32 @@ To completely disable abbreviations provided by this plugin only, add this to yo
 let g:tact_disable_abbreviations = 1
 ```
 
+<details>
+<summary>Neovim-only</summary>
+
+```lua
+vim.g.tact_disable_abbreviations = 1
+```
+
+Alternatively, add the following to the `init` key of your `lazy.nvim` config:
+
+```lua
+require('lazy').setup({
+  -- ...
+  {
+    'tact-lang/tact.vim',
+    init = function()
+      -- ...
+      vim.g.tact_disable_abbreviations = 1
+      -- ...
+    end,
+  },
+  -- ...
+}, {})
+```
+
+</detail>
+
 ### Linting
 
 Simply run `:Tact` command to try to compile using Tacts' compiler and look for errors. See [Usage section](#usage) for more info on the command.
@@ -181,6 +344,15 @@ For the ease of omnicompletion usage, you may want to add this or similar bindin
 " Open omnicompletion menu on ctrl-space
 inoremap <silent> <c-space> <c-x><c-o>
 ```
+
+<details>
+<summary>Neovim-only</summary>
+
+```lua
+vim.keymap.set('i', '<c-space>', '<c-x><c-o>', { noremap = true, silent = true})
+```
+
+</details>
 
 Note, that on macOS there's a default system-wide keyboard shortcut for <kbd>Ctrl</kbd><kbd>Space</kbd> (`^space`). You may want to change it to be <kbd>Cmd</kbd><kbd>Space</kbd> instead or use the different binding in Vim.
 

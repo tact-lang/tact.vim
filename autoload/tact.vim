@@ -19,6 +19,7 @@ let s:tact_stdlib_functions = {
       \ , 'newAddress(': 'Address'
       \ , 'contractAddress(': 'Address'
       \ , 'contractAddressExt(': 'Address'
+      \ , 'emit(': ''
       \ , 'cell(': 'Cell'
       \ , 'ton(': 'Int'
       \ , 'dump(': ''
