@@ -27,6 +27,68 @@ Note, that you can [disable highlighting of identifiers](#highlighting), if you 
 ## Installation
 
 <details>
+<summary><em>First time in Vim 8+? Read this instead:</em></summary>
+
+Assuming you don't have any configuration in the `.vimrc` file, it's nicer to setup some sane defaults first before using this (or any other) plugin. Also, the following mini-guide will use the built-in package management for Vim 8+ and won't introduce anything fancy.
+
+Steps:
+1. Get yourself a Vim of version 8+ installed and make sure to have git installed and present on your path as well
+2. Create a `~/.vimrc` file (or `~/_vimrc` if you're on Windows)
+3. Without such file there were sourced defaults by the Vim authors, but once it's created, we have to put them back explicitly by adding those lines in and saving changes <kbd>:w</kbd>: 
+
+```vim
+unlet! skip_defaults_vim
+source $VIMRUNTIME/defaults.vim
+```
+
+4. While we're here, let's add some `tact.vim`-specific stuff in as well. This time save and quit as we no longer need to add anything (<kbd>:wq</kbd>):
+
+```vim
+let g:tact_style_guide = 1  " Enabling default indentation style
+
+" the following is optional and added purely for your convenience:
+inoremap <silent> <c-space> <c-x><c-o>  " Open completion menu on ctrl-space
+```
+
+Note: on macOS the `<c-space>` is already bound in the system, so unless the terminal intercepts it you'll have to use a different keybinding.
+
+5. It's also nice to source in the extended defaults provided by the [tpope/vim-sensible](https://github.com/tpope/vim-sensible). To do so, let's use the built-in package manager:
+
+<details>
+On Windows, do this in PowerShell:
+
+```powershell
+git clone 'https://github.com/tpope/vim-sensible.git' $HOME\vimfiles\pack\tpope\start\sensible
+```
+
+On Linux, macOS or *BSD:
+
+```bash
+git clone 'https://github.com/tpope/vim-sensible.git' '~/.vim/pack/tpope/start/sensible'
+```
+</details>
+
+6. Finally, let's install ⚡ [tact.vim](https://github.com/tact-lang/tact.vim):
+
+<details>
+On Windows, do this in PowerShell:
+
+```powershell
+git clone 'https://github.com/tact-lang/tact.vim.git' $HOME\vimfiles\pack\tact-lang\start\tact
+```
+
+On Linux, macOS or *BSD:
+
+```bash
+git clone 'https://github.com/tact-lang/tact.vim.git' '~/.vim/pack/tact-lang/start/tact'
+```
+</details>
+
+7. Start the Vim in the [valid Tact project](https://docs.tact-lang.org/start) to be able to use `:Tact` command for easy compilation or simply provide any `.tact` file otherwise. Happy coding 🚀
+
+</details>
+
+<details>
 <summary>Vim's 8+ built-in package manager</summary>
 
 This is the recommended installation method if you use at least Vim 8 and you don't use another package manager.
