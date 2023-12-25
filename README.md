@@ -54,7 +54,6 @@ Note: on macOS the `<c-space>` is already bound in the system, so unless the ter
 
 5. It's also nice to source in the extended defaults provided by the [tpope/vim-sensible](https://github.com/tpope/vim-sensible). To do so, let's use the built-in package manager:
 
-<details>
 On Windows, do this in PowerShell:
 
 ```powershell
@@ -66,11 +65,9 @@ On Linux, macOS or *BSD:
 ```bash
 git clone 'https://github.com/tpope/vim-sensible.git' '~/.vim/pack/tpope/start/sensible'
 ```
-</details>
 
 6. Finally, let's install ⚡ [tact.vim](https://github.com/tact-lang/tact.vim):
 
-<details>
 On Windows, do this in PowerShell:
 
 ```powershell
@@ -82,7 +79,6 @@ On Linux, macOS or *BSD:
 ```bash
 git clone 'https://github.com/tact-lang/tact.vim.git' '~/.vim/pack/tact-lang/start/tact'
 ```
-</details>
 
 7. Start the Vim in the [valid Tact project](https://docs.tact-lang.org/start) to be able to use `:Tact` command for easy compilation or simply provide any `.tact` file otherwise. Happy coding 🚀
 
@@ -212,7 +208,7 @@ require('lazy').setup({
 }, {})
 ```
 
-</detail>
+</details>
 
 ### Indentation
 
@@ -246,7 +242,7 @@ require('lazy').setup({
 }, {})
 ```
 
-</detail>
+</details>
 
 ### Highlighting
 
@@ -280,7 +276,7 @@ require('lazy').setup({
 }, {})
 ```
 
-</detail>
+</details>
 
 To disable highlighting of structures (names of traits, messages, contracts and structs), add the following:
 
@@ -312,7 +308,7 @@ require('lazy').setup({
 }, {})
 ```
 
-</detail>
+</details>
 
 ### Formatting
 
@@ -340,7 +336,7 @@ vim.opt.foldmethod = "syntax"
 vim.opt.foldenable = false  -- disables automatic folding on file opening
 ```
 
-</detail>
+</details>
 
 ### Abbreviations
 
@@ -392,7 +388,7 @@ require('lazy').setup({
 }, {})
 ```
 
-</detail>
+</details>
 
 ### Linting
 
