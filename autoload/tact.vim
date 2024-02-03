@@ -110,6 +110,7 @@ let s:tact_Slice_methods = {
       \ , 'loadBits(': 'Slice'
       \ , 'preloadBits(': 'Slice'
       \ , 'loadCoins()': 'Int'
+      \ , 'loadAddress(': 'Address'
       \ , 'loadRef()': 'Cell'
       \ , 'refs()': 'Int'
       \ , 'bits()': 'Int'
