@@ -34,16 +34,30 @@ syn keyword tactStatement return
 syn keyword tactConditional if else
 syn keyword tactRepeat while repeat do until
 syn match tactOperator "!"
+syn match tactOperator "!="
+syn match tactOperator "!!"
 syn match tactOperator "\*"
+syn match tactOperator "\*="
 syn match tactOperator "/"
+syn match tactOperator "/="
 syn match tactOperator "%"
+syn match tactOperator "%="
 syn match tactOperator "-"
+syn match tactOperator "-="
 syn match tactOperator "+"
+syn match tactOperator "+="
 syn match tactOperator "="
+syn match tactOperator "=="
 syn match tactOperator "<"
+syn match tactOperator "<="
+syn match tactOperator "<<"
 syn match tactOperator ">"
+syn match tactOperator ">="
+syn match tactOperator ">>"
 syn match tactOperator "|"
+syn match tactOperator "||"
 syn match tactOperator "&"
+syn match tactOperator "&&"
 syn keyword tactKeyword
     \ as const let fun native primitive public extend self with
     \ get abstract virtual override extends mutates inline initOf
