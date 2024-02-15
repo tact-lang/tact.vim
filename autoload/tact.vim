@@ -54,6 +54,7 @@ let s:tact_stdlib_functions = {
 let s:tact_globals = {
       \ 'SendPayGasSeparately': 'Int'
       \ , 'SendIgnoreErrors': 'Int'
+      \ , 'SendBounceIfActionFail': 'Int'
       \ , 'SendDestroyIfZero': 'Int'
       \ , 'SendRemainingValue': 'Int'
       \ , 'SendRemainingBalance': 'Int'
