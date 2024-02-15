@@ -207,7 +207,7 @@ let s:regexp_map_no_right_angle_bracket = '\<map\s*<\s*'
       \ . s:regexp_type_as
       \ . '\s*'
 let s:regexp_bounced_no_right_angle_bracket = '\<bounced\s*<\s*' . s:regexp_type_literal . '\s*'
-let s:regexp_number_literal = '\%((\d\+)\|(0[xX]\x\+)\|(0[oO]\o\+)\|(0[bB][01]\+)\)'
+let s:regexp_number_literal = '\%(([\d_]\+)\|(0[xX][\x_]\+)\|(0[oO][\o_]\+)\|(0[bB][01_]\+)\)'
 
 " }}}1
 

@@ -85,7 +85,7 @@ syn region tactGenericTypeBounds
     \ contains=tactContainedComma,tactContainedAs,tactType,tactNativeType,tactStructure
 syn match tactContainedComma contained ","
 syn keyword tactContainedAs contained as
-syn match tactStructure "\zs\<\([A-Z_][a-zA-Z0-9_]*\)\>\ze"
+syn match tactStructure "\zs\<\([A-Z_]\w*\)\>\ze"
 
 " Special chars & Punctuation
 syn match tactSpecialChar
@@ -104,10 +104,11 @@ syn keyword tactConstant null
 syn match tactConstant "\zs\<\([A-Z][A-Z0-9_]*\)\>\ze"
 syn region tactString
     \ oneline start=+\z(["]\)+ end=+\z1+ contains=tactSpecialChar keepend
-syn match tactDecNumber "\<\d\+\>"
-syn match tactHexNumber "\<0[xX][0-9a-fA-F]\+\>"
-syn match tactOctNumber "\<0[oO][0-7]\+\>"
-syn match tactBinNumber "\<0[bB][01]\+\>"
+syn match tactDecNumberLeadingZero "\<0\d*\>"
+syn match tactDecNumber "\<[1-9]\%(_\?\d\)*\>"
+syn match tactHexNumber "\<0[xX]\x\%(_\?\x\)*\>"
+syn match tactOctNumber "\<0[oO]\o\%(_\?\o\)*\>"
+syn match tactBinNumber "\<0[bB][01]\%(_\?[01]\)*\>"
 syn keyword tactBool true false
 
 " }}}1
@@ -138,6 +139,7 @@ if !exists("g:tact_blank_identifiers")
   hi def link tactConstant Constant
 endif
 hi def link tactString String
+hi def link tactDecNumberLeadingZero Number
 hi def link tactDecNumber Number
 hi def link tactHexNumber Number
 hi def link tactOctNumber Number
