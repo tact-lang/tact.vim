@@ -2373,14 +2373,14 @@ function! tact#Complete(findstart, base) abort
   " return {'me': l:buf_messages, 'st': l:buf_structs}
   " return l:buf_global_constants
   " return { 'n': l:buf_native_functions, 'n_ret': l:buf_native_functions_returns, 'e': l:buf_extends_functions, 'e_ret': l:buf_extends_functions_returns}
-  " global functions:
+  "" global functions:
   " return {'g': l:buf_global_functions,
   "       \ 'g_ret': l:buf_global_functions_returns,
   "       \ 'f_ctx': l:buf_is_function_context,
   "       \ 'f_def': l:buf_function_definitions_before_current_line,
   "       \ 'f_n': l:buf_function_name,
   "       \ 'f_t': l:buf_function_type}
-  " trait:
+  "" trait:
   " return {'t_n': l:buf_trait_name,
   "       \ 't_f': l:buf_trait_fields,
   "       \ 't_m': l:buf_trait_methods,
@@ -2390,7 +2390,7 @@ function! tact#Complete(findstart, base) abort
   "       \ 'f_def': l:buf_function_definitions_before_current_line,
   "       \ 'f_n': l:buf_function_name,
   "       \ 'f_t': l:buf_function_type}
-  " contract:
+  "" contract:
   " return {'c_n': l:buf_contract_name,
   "       \ 'c_f': l:buf_contract_fields,
   "       \ 'c_m': l:buf_contract_methods,
@@ -2400,6 +2400,22 @@ function! tact#Complete(findstart, base) abort
   "       \ 'f_def': l:buf_function_definitions_before_current_line,
   "       \ 'f_n': l:buf_function_name,
   "       \ 'f_t': l:buf_function_type}
+  "" everything, using :PP for readability
+  "return {
+  "      \ '_msg': l:buf_messages, '_stt': l:buf_structs, '_const': l:buf_global_constants,
+  "      \ '_glob': l:buf_global_functions, '_glob_ret': l:buf_global_functions_returns,
+  "      \ '_nat': l:buf_native_functions, '_nat_ret': l:buf_native_functions_returns,
+  "      \ '_ext': l:buf_extends_functions, '_ext_ret': l:buf_extends_functions_returns,
+  "      \ 'c_ctx': l:buf_is_contract_context,
+  "      \ 'f_ctx': l:buf_is_function_context,
+  "      \ 't_ctx': l:buf_is_trait_context,
+  "      \ 'c_n': l:buf_contract_name, 'c_f': l:buf_contract_fields,
+  "      \ 'c_m': l:buf_contract_methods, 'c_mr': l:buf_contract_methods_returns,
+  "      \ 'f_n': l:buf_function_name, 'f_t': l:buf_function_type,
+  "      \ 't_n': l:buf_trait_name, 't_f': l:buf_trait_fields,
+  "      \ 't_m': l:buf_trait_methods, 't_mr': l:buf_trait_methods_returns,
+  "      \ 'f_def': l:buf_function_definitions_before_current_line,
+  "      \ }
 
   " }}}2
 
