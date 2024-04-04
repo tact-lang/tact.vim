@@ -369,8 +369,7 @@ function! s:ScanBodyForDefinitions(cursor_lnum, current_lnum, end_lnum, function
     endif
 
     " extract type from the let declaration
-    " let l:definition_type_arr = s:RecognizeTypeAsList(l:buf_line, '', '\%(;\|=.\{-};\?\)$')
-    let l:definition_type_arr = s:RecognizeTypeAsList(l:buf_line, '', '\%(=.\{-}\)\?;\?$')
+    let l:definition_type_arr = s:RecognizeTypeAsList(l:buf_line, '', '\%(;\|=.\{-};\?\)$')
     if empty(l:definition_type_arr)
       call winrestview(l:winview)
       call s:ErrorMsg('Invalid type syntax on line ' . l:local_lnum)
