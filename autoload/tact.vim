@@ -254,7 +254,7 @@ function! s:DotFallbackComplete(base, extends, structs, messages)
   endfor
 
   " find extends function matches
-  for item in keys(s:extends)
+  for item in keys(a:extends)
     if item =~ '\V' . a:base
       call add(l:compl, item + '(')
     endif
