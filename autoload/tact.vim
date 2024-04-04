@@ -655,7 +655,7 @@ function! s:GetTypeCompletionOptions(type_arr, messages, structs, extends_functi
     if a:type_arr[0] !=# 'map'
       return []
     endif
-    let l:options = ['get(', 'set(']
+    let l:options = ['get(', 'set(', 'asCell()']
 
     for item in keys(a:extends_functions)
       if has_key(a:extends_functions[item]['self'], 'map')
