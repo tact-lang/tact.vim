@@ -30,6 +30,7 @@ function! s:TactIndent()
 
   return indent(prevlnum)
 endfunction
+" TODO: use prettier or new formatter if they're available instead
 
 " Mark as sourced
 let b:did_indent = 1
