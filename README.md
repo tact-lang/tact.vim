@@ -63,7 +63,7 @@ git clone 'https://github.com/tpope/vim-sensible.git' $HOME\vimfiles\pack\tpope\
 On Linux, macOS or *BSD:
 
 ```bash
-git clone 'https://github.com/tpope/vim-sensible.git' '~/.vim/pack/tpope/start/sensible'
+git clone "https://github.com/tpope/vim-sensible.git" ~/.vim/pack/tpope/start/sensible
 ```
 
 6. Finally, let's install ⚡ [tact.vim](https://github.com/tact-lang/tact.vim):
@@ -77,7 +77,7 @@ git clone 'https://github.com/tact-lang/tact.vim.git' $HOME\vimfiles\pack\tact-l
 On Linux, macOS or *BSD:
 
 ```bash
-git clone 'https://github.com/tact-lang/tact.vim.git' '~/.vim/pack/tact-lang/start/tact'
+git clone "https://github.com/tact-lang/tact.vim.git" ~/.vim/pack/tact-lang/start/tact
 ```
 
 7. Start the Vim in the [valid Tact project](https://docs.tact-lang.org/start) to be able to use `:Tact` command for easy compilation or simply provide any `.tact` file otherwise. Happy coding 🚀
@@ -93,13 +93,13 @@ More about Vim's built-in package manager: [`:help packages`](https://vimhelp.or
 For Linux/macOS:
 
 ```sh
-git clone 'https://github.com/tact-lang/tact.vim.git' '~/.vim/pack/novusnota/start/tact'
+git clone "https://github.com/tact-lang/tact.vim.git" ~/.vim/pack/tact-lang/start/tact
 ```
 
 For Windows/PowerShell:
 
 ```powershell
-git clone 'https://github.com/tact-lang/tact.vim.git' $HOME\vimfiles\pack\novusnota\start\tact
+git clone 'https://github.com/tact-lang/tact.vim.git' $HOME\vimfiles\pack\tact-lang\start\tact
 ```
 
 Don't forget to restart Vim after :)

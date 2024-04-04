@@ -254,7 +254,7 @@ function! s:DotFallbackComplete(base, extends, structs, messages)
   endfor
 
   " find extends function matches
-  for item in keys(s:extends)
+  for item in keys(a:extends)
     if item =~ '\V' . a:base
       call add(l:compl, item + '(')
     endif
@@ -306,45 +306,58 @@ endfunction
 " [0, i] -- when the cursor position is not inside the body of this function/method
 " [1, i, {'name': ['types']}] -- when cursor position is inside, the dictionary holds all the variable definitions
 " where i is the latest checked position (a:current_lnum)
+" Experimental: [2, '}'] -- completion suggestion
 function! s:ScanBodyForDefinitions(cursor_lnum, current_lnum, end_lnum, function_name, function_start)
   " {{{2
-  " keep the value to modify it
-  let l:local_lnum = a:current_lnum
+  " keep the current view
+  let l:winview = winsaveview()
 
-  " we're way past the cursor point
-  if a:cursor_lnum < l:local_lnum
-    return [0, l:local_lnum]
-  endif
-
-  " still have a body to parse
-  let l:need_closing_braces = 1
+  " list of definitions
   let l:definitions_found = {} " {'name': [types]}
 
-  " start the parsing
-  while l:need_closing_braces != 0
+  " move to the start, then to the {
+  keepjumps exe "normal " . a:function_start . "G"
+  keepjumps normal ^
+  keepjumps normal f{
+
+  " trying to find ending } and ignoring strings in the process
+  let l:function_end = searchpair('{', '', '}', 'Wn')
+  " returned line number, or 0 and -1
+  " W -> doesn't Wrap around the end of the file
+  " n -> doesn't move the cursor
+
+  " didn't find it
+  if l:function_end <= 0
+    " if cursor point is on this line, then suggest }
+    "if a:cursor_lnum == l:local_lnum
+    "  return []
+    "endif
+
+    " otherwise -- error
+    call winrestview(l:winview)
+    call s:ErrorMsg('No closing } found for the ' . a:function_name . ' defined on line ' . a:function_start)
+    return []
+  endif
+
+  " cursor point is either before or after the function body
+  if a:cursor_lnum < a:function_start || a:cursor_lnum > l:function_end
+    call winrestview(l:winview)
+    return [0, l:function_end]
+  endif
+
+  " parse definitions
+  " while l:local_lnum < l:function_end && l:local_lnum <= a:end_lnum
+  " keep the line number to set it to the final line of the function body
+  let l:local_lnum = a:function_start
+  while l:local_lnum <= l:function_end
     " advance
     let l:local_lnum += 1
     if l:local_lnum > a:end_lnum
+      call winrestview(l:winview)
       call s:ErrorMsg('No closing } found for the ' . a:function_name . ' defined on line ' . a:function_start)
       return []
     endif
     let l:buf_line = s:TrimLine(getline(l:local_lnum))
-
-    " skip empty
-    if empty(l:buf_line)
-      continue
-    endif
-
-    " add a brace
-    if l:buf_line =~# '}$'
-      let l:need_closing_braces -= 1
-      continue
-    endif
-
-    " if cursor is on this line, then we found our context
-    if a:cursor_lnum == l:local_lnum
-      return [1, l:local_lnum, l:definitions_found]
-    endif
 
     " parse a definition
     let l:definition_name_arr = []
@@ -355,15 +368,17 @@ function! s:ScanBodyForDefinitions(cursor_lnum, current_lnum, end_lnum, function
       continue
     endif
 
-    " extract type
-    let l:definition_type_arr = s:RecognizeTypeAsList(l:buf_line, '', '\%(=.\{-}\)\?;$')
+    " extract type from the let declaration
+    let l:definition_type_arr = s:RecognizeTypeAsList(l:buf_line, '', '\%(;\|=.\{-};\?\)$')
     if empty(l:definition_type_arr)
+      call winrestview(l:winview)
       call s:ErrorMsg('Invalid type syntax on line ' . l:local_lnum)
       return []
     endif
 
     let l:definition_parsed_type_arr = s:ParseTypeIntoList(l:local_lnum, l:definition_name_arr[0], trim(l:definition_type_arr[0]))
     if empty(l:definition_parsed_type_arr)
+      call winrestview(l:winview)
       return [] " already errored in the function above
     endif
 
@@ -371,8 +386,85 @@ function! s:ScanBodyForDefinitions(cursor_lnum, current_lnum, end_lnum, function
     let l:definitions_found[l:definition_name_arr[0]] = l:definition_parsed_type_arr
   endwhile
 
-  " no context found, return regardless
-  return [0, l:local_lnum]
+  " restore view
+  call winrestview(l:winview)
+
+  " produce definitions
+  if empty(l:definitions_found)
+    return [0, l:function_end]
+  else
+    return [1, l:function_end, l:definitions_found]
+  endif
+
+  " ----------------------------------------
+  " Previous approach, temporarily archived.
+  "   may be improved by actually parsing all statement blocks
+  "   or rather -- simply looking for {, } else {, } catch {, } until ()) " and correctly counting {} pairs,
+  "   although that approach would be too brittle and inflexible
+  " ----------------------------------------
+
+  " " we're way past the cursor point
+  " if a:cursor_lnum < l:local_lnum
+  " return [0, l:local_lnum]
+  " endif
+
+  " " still have a body to parse
+  " let l:need_closing_braces = 1
+  " let l:definitions_found = {} " {'name': [types]}
+
+  " " start the parsing
+  " while l:need_closing_braces != 0
+  " " advance
+  " let l:local_lnum += 1
+  " if l:local_lnum > a:end_lnum
+  " call s:ErrorMsg('No closing } found for the ' . a:function_name . ' defined on line ' . a:function_start)
+  " return []
+  " endif
+  " let l:buf_line = s:TrimLine(getline(l:local_lnum))
+
+  " " skip empty
+  " if empty(l:buf_line)
+  " continue
+  " endif
+
+  " " add a brace
+  " if l:buf_line =~# '}$'
+  " let l:need_closing_braces -= 1
+  " continue
+  " endif
+
+  " " if cursor is on this line, then we found our context
+  " if a:cursor_lnum == l:local_lnum
+  " return [1, l:local_lnum, l:definitions_found]
+  " endif
+
+  " " parse a definition
+  " let l:definition_name_arr = []
+  " silent! call substitute(l:buf_line, '^let\s\+\(\w\+\)\s*:', '\=add(l:definition_name_arr,submatch(1))', '')
+
+  " " skip if not matched
+  " if empty(l:definition_name_arr)
+  " continue
+  " endif
+
+  " " extract type
+  " let l:definition_type_arr = s:RecognizeTypeAsList(l:buf_line, '', '\%(=.\{-}\)\?;$')
+  " if empty(l:definition_type_arr)
+  " call s:ErrorMsg('Invalid type syntax on line ' . l:local_lnum)
+  " return []
+  " endif
+
+  " let l:definition_parsed_type_arr = s:ParseTypeIntoList(l:local_lnum, l:definition_name_arr[0], trim(l:definition_type_arr[0]))
+  " if empty(l:definition_parsed_type_arr)
+  " return [] " already errored in the function above
+  " endif
+
+  " " store result
+  " let l:definitions_found[l:definition_name_arr[0]] = l:definition_parsed_type_arr
+  " endwhile
+
+  " " no context found, return regardless
+  " return [0, l:local_lnum]
   " }}}2
 endfunction
 
@@ -562,7 +654,7 @@ function! s:GetTypeCompletionOptions(type_arr, messages, structs, extends_functi
     if a:type_arr[0] !=# 'map'
       return []
     endif
-    let l:options = ['get(', 'set(']
+    let l:options = ['get(', 'set(', 'asCell()']
 
     for item in keys(a:extends_functions)
       if has_key(a:extends_functions[item]['self'], 'map')
@@ -1607,7 +1699,7 @@ function! tact#Complete(findstart, base) abort
       " }}}4
 
         " parse a regular method
-        if l:buf_line =~# '\<fun\s\+\w\+(.\{-}).\{-}{'
+        if l:buf_line =~# '^.\{-}\<fun\s\+\w\+(.\{-}).\{-}{'
           " prohibiting extends methods
           let l:prohibited_extends_arr = []
           silent! call substitute(l:buf_line, '^.\{-}\(\<extends\>\).\{-}(', '\=add(l:prohibited_extends_arr,submatch(1))', '')
@@ -1615,6 +1707,15 @@ function! tact#Complete(findstart, base) abort
           if !empty(l:prohibited_extends_arr)
             call s:ErrorMsg('Prohibited extends modifier for the trait function on line ' . l:buf_i)
             return []
+          endif
+
+          " find (and skip) the getter functions
+          let l:is_getter_function = 0
+          let l:getter_function_arr = []
+          silent! call substitute(l:buf_line, '^.\{-}\(\<get\>\).\{-}(', '\=add(l:getter_function_arr,submatch(1))', '')
+
+          if !empty(l:getter_function_arr)
+            let l:is_getter_function = 1
           endif
 
           " getting the name
@@ -1667,9 +1768,11 @@ function! tact#Complete(findstart, base) abort
             let l:function_return_parsed = l:parsed_return_list
           endif
 
-          " store gathered results
-          let l:buf_trait_methods[l:trait_name_arr[0]][l:function_name_arr[0]] = l:function_params_parsed
-          let l:buf_trait_methods_returns[l:trait_name_arr[0]][l:function_name_arr[0]] = l:function_return_parsed
+          " store gathered results if not a getter function
+          if l:is_getter_function == 0
+            let l:buf_trait_methods[l:trait_name_arr[0]][l:function_name_arr[0]] = l:function_params_parsed
+            let l:buf_trait_methods_returns[l:trait_name_arr[0]][l:function_name_arr[0]] = l:function_return_parsed
+          endif
 
           " if it already ends, skip the body
           if l:buf_line =~# '}$'
@@ -1696,8 +1799,8 @@ function! tact#Complete(findstart, base) abort
             return []
           endif
 
-          " set the context, if not already
-          if l:buf_is_function_context == 0
+          " set the context, if not already (and if it's not a getter function)
+          if l:buf_is_function_context == 0 && l:is_getter_function == 0
             let l:buf_is_function_context = 1
             let l:buf_function_type = 'method'
             let l:buf_function_name = l:function_name_arr[0]
@@ -2112,7 +2215,7 @@ function! tact#Complete(findstart, base) abort
         endif
 
         " parse a regular method
-        if l:buf_line =~# '\<fun\s\+\w\+(.\{-}).\{-}{'
+        if l:buf_line =~# '^.\{-}\<fun\s\+\w\+(.\{-}).\{-}{'
           " prohibiting extends methods
           let l:prohibited_extends_arr = []
           silent! call substitute(l:buf_line, '^.\{-}\(\<extends\>\).\{-}(', '\=add(l:prohibited_extends_arr,submatch(1))', '')
@@ -2120,6 +2223,15 @@ function! tact#Complete(findstart, base) abort
           if !empty(l:prohibited_extends_arr)
             call s:ErrorMsg('Prohibited extends modifier for the contract function on line ' . l:buf_i)
             return []
+          endif
+
+          " find (and skip) the getter functions
+          let l:is_getter_function = 0
+          let l:getter_function_arr = []
+          silent! call substitute(l:buf_line, '^.\{-}\(\<get\>\).\{-}(', '\=add(l:getter_function_arr,submatch(1))', '')
+
+          if !empty(l:getter_function_arr)
+            let l:is_getter_function = 1
           endif
 
           " getting the name
@@ -2172,9 +2284,11 @@ function! tact#Complete(findstart, base) abort
             let l:function_return_parsed = l:parsed_return_list
           endif
 
-          " store gathered results
-          let l:buf_contract_methods[l:contract_name_arr[0]][l:function_name_arr[0]] = l:function_params_parsed
-          let l:buf_contract_methods_returns[l:contract_name_arr[0]][l:function_name_arr[0]] = l:function_return_parsed
+          " store gathered results, if it's not a getter
+          if l:is_getter_function == 0
+            let l:buf_contract_methods[l:contract_name_arr[0]][l:function_name_arr[0]] = l:function_params_parsed
+            let l:buf_contract_methods_returns[l:contract_name_arr[0]][l:function_name_arr[0]] = l:function_return_parsed
+          endif
 
           " if it already ends, skip the body
           if l:buf_line =~# '}$'
@@ -2201,8 +2315,8 @@ function! tact#Complete(findstart, base) abort
             return []
           endif
 
-          " set the context, if not already
-          if l:buf_is_function_context == 0
+          " set the context, if not already (and if it's not a getter function)
+          if l:buf_is_function_context == 0 && l:is_getter_function == 0
             let l:buf_is_function_context = 1
             let l:buf_function_type = 'method'
             let l:buf_function_name = l:function_name_arr[0]
@@ -2258,14 +2372,14 @@ function! tact#Complete(findstart, base) abort
   " return {'me': l:buf_messages, 'st': l:buf_structs}
   " return l:buf_global_constants
   " return { 'n': l:buf_native_functions, 'n_ret': l:buf_native_functions_returns, 'e': l:buf_extends_functions, 'e_ret': l:buf_extends_functions_returns}
-  " global functions:
+  "" global functions:
   " return {'g': l:buf_global_functions,
   "       \ 'g_ret': l:buf_global_functions_returns,
   "       \ 'f_ctx': l:buf_is_function_context,
   "       \ 'f_def': l:buf_function_definitions_before_current_line,
   "       \ 'f_n': l:buf_function_name,
   "       \ 'f_t': l:buf_function_type}
-  " trait:
+  "" trait:
   " return {'t_n': l:buf_trait_name,
   "       \ 't_f': l:buf_trait_fields,
   "       \ 't_m': l:buf_trait_methods,
@@ -2275,7 +2389,7 @@ function! tact#Complete(findstart, base) abort
   "       \ 'f_def': l:buf_function_definitions_before_current_line,
   "       \ 'f_n': l:buf_function_name,
   "       \ 'f_t': l:buf_function_type}
-  " contract:
+  "" contract:
   " return {'c_n': l:buf_contract_name,
   "       \ 'c_f': l:buf_contract_fields,
   "       \ 'c_m': l:buf_contract_methods,
@@ -2285,6 +2399,22 @@ function! tact#Complete(findstart, base) abort
   "       \ 'f_def': l:buf_function_definitions_before_current_line,
   "       \ 'f_n': l:buf_function_name,
   "       \ 'f_t': l:buf_function_type}
+  "" everything, using :PP for readability
+  "return {
+  "      \ '_msg': l:buf_messages, '_stt': l:buf_structs, '_const': l:buf_global_constants,
+  "      \ '_glob': l:buf_global_functions, '_glob_ret': l:buf_global_functions_returns,
+  "      \ '_nat': l:buf_native_functions, '_nat_ret': l:buf_native_functions_returns,
+  "      \ '_ext': l:buf_extends_functions, '_ext_ret': l:buf_extends_functions_returns,
+  "      \ 'c_ctx': l:buf_is_contract_context,
+  "      \ 'f_ctx': l:buf_is_function_context,
+  "      \ 't_ctx': l:buf_is_trait_context,
+  "      \ 'c_n': l:buf_contract_name, 'c_f': l:buf_contract_fields,
+  "      \ 'c_m': l:buf_contract_methods, 'c_mr': l:buf_contract_methods_returns,
+  "      \ 'f_n': l:buf_function_name, 'f_t': l:buf_function_type,
+  "      \ 't_n': l:buf_trait_name, 't_f': l:buf_trait_fields,
+  "      \ 't_m': l:buf_trait_methods, 't_mr': l:buf_trait_methods_returns,
+  "      \ 'f_def': l:buf_function_definitions_before_current_line,
+  "      \ }
 
   " }}}2
 

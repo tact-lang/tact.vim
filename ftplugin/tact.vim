@@ -41,6 +41,7 @@ let &l:errorformat =
   \   ' %#''file://' . s:win_sep . '%f'': %s: line %l pos %c:%m',
   \   '%m'
   \ ], ',')
+" TODO: update the errorformat
 setlocal magic
 
 ""
@@ -88,6 +89,7 @@ endfunction
 
 " Registering it as a command
 command Tact :call s:TactCompile()
+" TODO: setup makeprg for :make to work.
 
 " Format function
 function! s:TactFormat()
