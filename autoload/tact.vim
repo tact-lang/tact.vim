@@ -1700,7 +1700,7 @@ function! tact#Complete(findstart, base) abort
       " }}}4
 
         " parse a regular method
-        if l:buf_line =~# '\<fun\s\+\w\+(.\{-}).\{-}{'
+        if l:buf_line =~# '^.\{-}\<fun\s\+\w\+(.\{-}).\{-}{'
           " prohibiting extends methods
           let l:prohibited_extends_arr = []
           silent! call substitute(l:buf_line, '^.\{-}\(\<extends\>\).\{-}(', '\=add(l:prohibited_extends_arr,submatch(1))', '')
@@ -1708,6 +1708,15 @@ function! tact#Complete(findstart, base) abort
           if !empty(l:prohibited_extends_arr)
             call s:ErrorMsg('Prohibited extends modifier for the trait function on line ' . l:buf_i)
             return []
+          endif
+
+          " find (and skip) the getter functions
+          let l:is_getter_function = 0
+          let l:getter_function_arr = []
+          silent! call substitute(l:buf_line, '^.\{-}\(\<get\>\).\{-}(', '\=add(l:getter_function_arr,submatch(1))', '')
+
+          if !empty(l:getter_function_arr)
+            let l:is_getter_function = 1
           endif
 
           " getting the name
@@ -1760,9 +1769,11 @@ function! tact#Complete(findstart, base) abort
             let l:function_return_parsed = l:parsed_return_list
           endif
 
-          " store gathered results
-          let l:buf_trait_methods[l:trait_name_arr[0]][l:function_name_arr[0]] = l:function_params_parsed
-          let l:buf_trait_methods_returns[l:trait_name_arr[0]][l:function_name_arr[0]] = l:function_return_parsed
+          " store gathered results if not a getter function
+          if l:is_getter_function == 0
+            let l:buf_trait_methods[l:trait_name_arr[0]][l:function_name_arr[0]] = l:function_params_parsed
+            let l:buf_trait_methods_returns[l:trait_name_arr[0]][l:function_name_arr[0]] = l:function_return_parsed
+          endif
 
           " if it already ends, skip the body
           if l:buf_line =~# '}$'
@@ -1789,8 +1800,8 @@ function! tact#Complete(findstart, base) abort
             return []
           endif
 
-          " set the context, if not already
-          if l:buf_is_function_context == 0
+          " set the context, if not already (and if it's not a getter function)
+          if l:buf_is_function_context == 0 && l:is_getter_function == 0
             let l:buf_is_function_context = 1
             let l:buf_function_type = 'method'
             let l:buf_function_name = l:function_name_arr[0]
@@ -2205,7 +2216,7 @@ function! tact#Complete(findstart, base) abort
         endif
 
         " parse a regular method
-        if l:buf_line =~# '\<fun\s\+\w\+(.\{-}).\{-}{'
+        if l:buf_line =~# '^.\{-}\<fun\s\+\w\+(.\{-}).\{-}{'
           " prohibiting extends methods
           let l:prohibited_extends_arr = []
           silent! call substitute(l:buf_line, '^.\{-}\(\<extends\>\).\{-}(', '\=add(l:prohibited_extends_arr,submatch(1))', '')
@@ -2213,6 +2224,15 @@ function! tact#Complete(findstart, base) abort
           if !empty(l:prohibited_extends_arr)
             call s:ErrorMsg('Prohibited extends modifier for the contract function on line ' . l:buf_i)
             return []
+          endif
+
+          " find (and skip) the getter functions
+          let l:is_getter_function = 0
+          let l:getter_function_arr = []
+          silent! call substitute(l:buf_line, '^.\{-}\(\<get\>\).\{-}(', '\=add(l:getter_function_arr,submatch(1))', '')
+
+          if !empty(l:getter_function_arr)
+            let l:is_getter_function = 1
           endif
 
           " getting the name
@@ -2265,9 +2285,11 @@ function! tact#Complete(findstart, base) abort
             let l:function_return_parsed = l:parsed_return_list
           endif
 
-          " store gathered results
-          let l:buf_contract_methods[l:contract_name_arr[0]][l:function_name_arr[0]] = l:function_params_parsed
-          let l:buf_contract_methods_returns[l:contract_name_arr[0]][l:function_name_arr[0]] = l:function_return_parsed
+          " store gathered results, if it's not a getter
+          if l:is_getter_function == 0
+            let l:buf_contract_methods[l:contract_name_arr[0]][l:function_name_arr[0]] = l:function_params_parsed
+            let l:buf_contract_methods_returns[l:contract_name_arr[0]][l:function_name_arr[0]] = l:function_return_parsed
+          endif
 
           " if it already ends, skip the body
           if l:buf_line =~# '}$'
@@ -2294,8 +2316,8 @@ function! tact#Complete(findstart, base) abort
             return []
           endif
 
-          " set the context, if not already
-          if l:buf_is_function_context == 0
+          " set the context, if not already (and if it's not a getter function)
+          if l:buf_is_function_context == 0 && l:is_getter_function == 0
             let l:buf_is_function_context = 1
             let l:buf_function_type = 'method'
             let l:buf_function_name = l:function_name_arr[0]
