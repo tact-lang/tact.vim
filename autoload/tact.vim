@@ -306,45 +306,58 @@ endfunction
 " [0, i] -- when the cursor position is not inside the body of this function/method
 " [1, i, {'name': ['types']}] -- when cursor position is inside, the dictionary holds all the variable definitions
 " where i is the latest checked position (a:current_lnum)
+" Experimental: [2, '}'] -- completion suggestion
 function! s:ScanBodyForDefinitions(cursor_lnum, current_lnum, end_lnum, function_name, function_start)
   " {{{2
-  " keep the value to modify it
-  let l:local_lnum = a:current_lnum
+  " keep the current view
+  let l:winview = winsaveview()
 
-  " we're way past the cursor point
-  if a:cursor_lnum < l:local_lnum
-    return [0, l:local_lnum]
-  endif
-
-  " still have a body to parse
-  let l:need_closing_braces = 1
+  " list of definitions
   let l:definitions_found = {} " {'name': [types]}
 
-  " start the parsing
-  while l:need_closing_braces != 0
+  " move to the start, then to the {
+  keepjumps exe "normal " . a:function_start . "G"
+  keepjumps normal ^
+  keepjumps normal f{
+
+  " trying to find ending } and ignoring strings in the process
+  let l:function_end = searchpair('{', '', '}', 'Wn')
+  " returned line number, or 0 and -1
+  " W -> doesn't Wrap around the end of the file
+  " n -> doesn't move the cursor
+
+  " didn't find it
+  if l:function_end <= 0
+    " if cursor point is on this line, then suggest }
+    "if a:cursor_lnum == l:local_lnum
+    "  return []
+    "endif
+
+    " otherwise -- error
+    call winrestview(l:winview)
+    call s:ErrorMsg('No closing } found for the ' . a:function_name . ' defined on line ' . a:function_start)
+    return []
+  endif
+
+  " cursor point is either before or after the function body
+  if a:cursor_lnum < a:function_start || a:cursor_lnum > l:function_end
+    call winrestview(l:winview)
+    return [0, l:function_end]
+  endif
+
+  " parse definitions
+  " while l:local_lnum < l:function_end && l:local_lnum <= a:end_lnum
+  " keep the line number to set it to the final line of the function body
+  let l:local_lnum = a:function_start
+  while l:local_lnum <= l:function_end
     " advance
     let l:local_lnum += 1
     if l:local_lnum > a:end_lnum
+      call winrestview(l:winview)
       call s:ErrorMsg('No closing } found for the ' . a:function_name . ' defined on line ' . a:function_start)
       return []
     endif
     let l:buf_line = s:TrimLine(getline(l:local_lnum))
-
-    " skip empty
-    if empty(l:buf_line)
-      continue
-    endif
-
-    " add a brace
-    if l:buf_line =~# '}$'
-      let l:need_closing_braces -= 1
-      continue
-    endif
-
-    " if cursor is on this line, then we found our context
-    if a:cursor_lnum == l:local_lnum
-      return [1, l:local_lnum, l:definitions_found]
-    endif
 
     " parse a definition
     let l:definition_name_arr = []
@@ -355,15 +368,18 @@ function! s:ScanBodyForDefinitions(cursor_lnum, current_lnum, end_lnum, function
       continue
     endif
 
-    " extract type
-    let l:definition_type_arr = s:RecognizeTypeAsList(l:buf_line, '', '\%(=.\{-}\)\?;$')
+    " extract type from the let declaration
+    " let l:definition_type_arr = s:RecognizeTypeAsList(l:buf_line, '', '\%(;\|=.\{-};\?\)$')
+    let l:definition_type_arr = s:RecognizeTypeAsList(l:buf_line, '', '\%(=.\{-}\)\?;\?$')
     if empty(l:definition_type_arr)
+      call winrestview(l:winview)
       call s:ErrorMsg('Invalid type syntax on line ' . l:local_lnum)
       return []
     endif
 
     let l:definition_parsed_type_arr = s:ParseTypeIntoList(l:local_lnum, l:definition_name_arr[0], trim(l:definition_type_arr[0]))
     if empty(l:definition_parsed_type_arr)
+      call winrestview(l:winview)
       return [] " already errored in the function above
     endif
 
@@ -371,8 +387,85 @@ function! s:ScanBodyForDefinitions(cursor_lnum, current_lnum, end_lnum, function
     let l:definitions_found[l:definition_name_arr[0]] = l:definition_parsed_type_arr
   endwhile
 
-  " no context found, return regardless
-  return [0, l:local_lnum]
+  " restore view
+  call winrestview(l:winview)
+
+  " produce definitions
+  if empty(l:definitions_found)
+    return [0, l:function_end]
+  else
+    return [1, l:function_end, l:definitions_found]
+  endif
+
+  " ----------------------------------------
+  " Previous approach, temporarily archived.
+  "   may be improved by actually parsing all statement blocks
+  "   or rather -- simply looking for {, } else {, } catch {, } until ()) " and correctly counting {} pairs,
+  "   although that approach would be too brittle and inflexible
+  " ----------------------------------------
+
+  " " we're way past the cursor point
+  " if a:cursor_lnum < l:local_lnum
+  " return [0, l:local_lnum]
+  " endif
+
+  " " still have a body to parse
+  " let l:need_closing_braces = 1
+  " let l:definitions_found = {} " {'name': [types]}
+
+  " " start the parsing
+  " while l:need_closing_braces != 0
+  " " advance
+  " let l:local_lnum += 1
+  " if l:local_lnum > a:end_lnum
+  " call s:ErrorMsg('No closing } found for the ' . a:function_name . ' defined on line ' . a:function_start)
+  " return []
+  " endif
+  " let l:buf_line = s:TrimLine(getline(l:local_lnum))
+
+  " " skip empty
+  " if empty(l:buf_line)
+  " continue
+  " endif
+
+  " " add a brace
+  " if l:buf_line =~# '}$'
+  " let l:need_closing_braces -= 1
+  " continue
+  " endif
+
+  " " if cursor is on this line, then we found our context
+  " if a:cursor_lnum == l:local_lnum
+  " return [1, l:local_lnum, l:definitions_found]
+  " endif
+
+  " " parse a definition
+  " let l:definition_name_arr = []
+  " silent! call substitute(l:buf_line, '^let\s\+\(\w\+\)\s*:', '\=add(l:definition_name_arr,submatch(1))', '')
+
+  " " skip if not matched
+  " if empty(l:definition_name_arr)
+  " continue
+  " endif
+
+  " " extract type
+  " let l:definition_type_arr = s:RecognizeTypeAsList(l:buf_line, '', '\%(=.\{-}\)\?;$')
+  " if empty(l:definition_type_arr)
+  " call s:ErrorMsg('Invalid type syntax on line ' . l:local_lnum)
+  " return []
+  " endif
+
+  " let l:definition_parsed_type_arr = s:ParseTypeIntoList(l:local_lnum, l:definition_name_arr[0], trim(l:definition_type_arr[0]))
+  " if empty(l:definition_parsed_type_arr)
+  " return [] " already errored in the function above
+  " endif
+
+  " " store result
+  " let l:definitions_found[l:definition_name_arr[0]] = l:definition_parsed_type_arr
+  " endwhile
+
+  " " no context found, return regardless
+  " return [0, l:local_lnum]
   " }}}2
 endfunction
 
