@@ -931,7 +931,8 @@ function! tact#Complete(findstart, base) abort
   let l:buf_function_definitions_before_current_line = {} " {'name': ['types']}
 
   " reading & parsing current file
-  let l:buf_contents = readfile(expand('%'))
+  let l:buf_contents = getline(1, '$')
+  " let l:buf_contents = readfile(expand('%'))
   let l:buf_i = 1
   let l:buf_last = len(l:buf_contents)
 
