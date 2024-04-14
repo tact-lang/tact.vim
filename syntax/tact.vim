@@ -103,7 +103,7 @@ syn match tactStructure "\zs\<\([A-Z_]\w*\)\>\ze"
 
 " Special chars & Punctuation
 syn match tactSpecialChar
-    \ contained "\\\(u\x\{4\}\|u{\x\+}\|x\x\x\|x{\x\+}\|.\)" extend
+    \ contained "\\\(u\x\{4\}\|u{\x\{1,6\}}\|x\x\x\|[\\\"nrtvbf]\)" extend
 syn match tactDelimiter "[{}\[\]();,.:?]"
 
 " Comments
