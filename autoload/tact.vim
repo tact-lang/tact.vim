@@ -14,6 +14,7 @@ let s:tact_stdlib_functions = {
       \ , 'sender()': 'Address'
       \ , 'require(': ''
       \ , 'now()': 'Int'
+      \ , 'address(': 'Address'
       \ , 'myBalance()': 'Int'
       \ , 'myAddress()': 'Address'
       \ , 'newAddress(': 'Address'
@@ -23,6 +24,7 @@ let s:tact_stdlib_functions = {
       \ , 'cell(': 'Cell'
       \ , 'ton(': 'Int'
       \ , 'dump(': ''
+      \ , 'dumpStack()': ''
       \ , 'beginString()': 'StringBuilder'
       \ , 'beginComment()': 'StringBuilder'
       \ , 'beginTailString()': 'StringBuilder'
@@ -37,7 +39,10 @@ let s:tact_stdlib_functions = {
       \ , 'min(': 'Int'
       \ , 'max(': 'Int'
       \ , 'abs(': 'Int'
+      \ , 'log(': 'Int'
+      \ , 'log2(': 'Int'
       \ , 'pow(': 'Int'
+      \ , 'pow2(': 'Int'
       \ , 'throw(': ''
       \ , 'nativeThrowWhen(': ''
       \ , 'nativeThrowUnless(': ''
@@ -59,10 +64,29 @@ let s:tact_globals = {
       \ , 'SendRemainingValue': 'Int'
       \ , 'SendRemainingBalance': 'Int'
       \ , 'SendParameters{': ''
+      \ , 'ReserveExact': 'Int'
+      \ , 'ReserveAllExcept': 'Int'
+      \ , 'ReserveAtMost': 'Int'
+      \ , 'ReserveAddOriginalBalance': 'Int'
+      \ , 'ReserveInvertSign': 'Int'
+      \ , 'ReserveBounceIfActionFail': 'Int'
+      \ }
+
+let s:tact_Map_methods = {
+      \ 'get(': ''
+      \ , 'set(': ''
+      \ , 'del(': ''
+      \ , 'asCell()': 'Cell'
+      \ , 'isEmpty(': 'Bool'
+      \ }
+
+let s:tact_Address_methods = {
+      \ 'toString(': 'String'
       \ }
 
 let s:tact_StringBuilder_methods = {
       \ 'append(': ''
+      \ , 'concat(': 'StringBuilder'
       \ , 'toString()': 'String'
       \ , 'toCell()': 'Cell'
       \ , 'toSlice()': 'Slice'
@@ -126,6 +150,10 @@ let s:tact_stdlib_deploy = [
       \ 'Deployable'
       \ ]
 
+let s:tact_stdlib_dns = [
+      \ 'DNSResolver'
+      \ ]
+
 let s:tact_stdlib_ownable = [
       \ 'Ownable'
       \ , 'OwnableTransferable'
@@ -140,7 +168,12 @@ let s:tact_stdlib_imports = [
       \ '@stdlib/deploy'
       \ , '@stdlib/ownable'
       \ , '@stdlib/stoppable'
+      \ , '@stdlib/dns'
+      \ , '@stdlib/config'
+      \ , '@stdlib/content'
       \ ]
+
+" ...
 
 " }}}1
 
@@ -654,7 +687,7 @@ function! s:GetTypeCompletionOptions(type_arr, messages, structs, extends_functi
     if a:type_arr[0] !=# 'map'
       return []
     endif
-    let l:options = ['get(', 'set(', 'asCell()']
+    let l:options = keys(s:tact_Map_methods)
 
     for item in keys(a:extends_functions)
       if has_key(a:extends_functions[item]['self'], 'map')
@@ -712,6 +745,8 @@ function! s:GetTypeCompletionOptions(type_arr, messages, structs, extends_functi
       call extend(l:options, keys(s:tact_String_methods))
     elseif a:type_arr[0] ==# 'StringBuilder'
       call extend(l:options, keys(s:tact_StringBuilder_methods))
+    elseif a:type_arr[0] ==# 'Address'
+      call extend(l:options, keys(s:tact_Address_methods))
     endif
 
     " message
@@ -821,11 +856,15 @@ function! tact#Complete(findstart, base) abort
       if item =~# '@stdlib/deploy'
         call extend(l:traits, s:tact_stdlib_deploy)
       endif
+      if item =~# '@stdlib/dns'
+        call extend(l:traits, s:tact_stdlib_dns)
+      endif
       if item =~# '@stdlib/ownable'
         call extend(l:traits, s:tact_stdlib_ownable)
       endif
       if item =~# '@stdlib/stoppable'
         call extend(l:traits, s:tact_stdlib_stoppable)
+        call extend(l:traits, s:tact_stdlib_ownable)
       endif
     endfor
 
@@ -1310,6 +1349,10 @@ function! tact#Complete(findstart, base) abort
         let l:split_by_commas = split(l:function_params_chunk_arr[0], ',')
 
         for param in l:split_by_commas
+          if empty(trim(param))
+            continue
+          endif
+
           let l:split_by_colons = split(param, ':')
           if len(l:split_by_colons) != 2
             call s:ErrorMsg('Invalid syntax of global function parameters on line ' . l:buf_i)
@@ -1737,6 +1780,10 @@ function! tact#Complete(findstart, base) abort
             let l:split_by_commas = split(l:function_params_chunk_arr[0], ',')
 
             for param in l:split_by_commas
+              if empty(trim(param))
+                continue
+              endif
+
               let l:split_by_colons = split(param, ':')
               if len(l:split_by_colons) != 2
                 call s:ErrorMsg('Invalid syntax of trait function parameters on line ' . l:buf_i)
@@ -2149,6 +2196,10 @@ function! tact#Complete(findstart, base) abort
             let l:split_by_commas = split(l:function_params_chunk_arr[0], ',')
 
             for param in l:split_by_commas
+              if empty(trim(param))
+                continue
+              endif
+
               let l:split_by_colons = split(param, ':')
               if len(l:split_by_colons) != 2
                 call s:ErrorMsg('Invalid syntax of contract init() parameters on line ' . l:buf_i)
@@ -2253,6 +2304,10 @@ function! tact#Complete(findstart, base) abort
             let l:split_by_commas = split(l:function_params_chunk_arr[0], ',')
 
             for param in l:split_by_commas
+              if empty(trim(param))
+                continue
+              endif
+
               let l:split_by_colons = split(param, ':')
               if len(l:split_by_colons) != 2
                 call s:ErrorMsg('Invalid syntax of contract function parameters on line ' . l:buf_i)

@@ -1,9 +1,11 @@
 import "@stdlib/ownable";
+primitive Int;
 
 struct SampleStruct {
     message: Int;
 }
-const GLOBAL_CONSTANT: map<Int, Name> = 5;
+
+virtual const GLOBAL_CONSTANT: map<Int, Name> = 05;
 
 @name(store_uint)
 native storeUint(s: Builder, value: Int, bits: Int): Builder;
@@ -13,7 +15,7 @@ message(0x1234) MyMessage {
 }
 
 fun globalFun(arg: String) {
-    let x: Int = 123;
+    let x: Int = 123_123;
 }
 
 trait MyTrait {
@@ -36,7 +38,7 @@ contract MyContract with MyTrait, Ownable? {
     init(owner: Address) {
         self.owner = owner;
     }
-    bounced() {}
+    bounced(msg: bounced<MyMessage>) {}
     external() {}
     receive() {}
     virtual fun overrideMe() {}
