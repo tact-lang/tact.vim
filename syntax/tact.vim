@@ -32,6 +32,7 @@ syn match tactKeyword "\<receive(\@="
 " Statements, Operators & Keywords
 syn keyword tactStatement return
 syn keyword tactConditional if else
+syn keyword tactException try catch
 syn keyword tactRepeat while repeat do until
 syn match tactOperator "!"
 syn match tactOperator "!="
@@ -58,6 +59,7 @@ syn match tactOperator "|"
 syn match tactOperator "||"
 syn match tactOperator "&"
 syn match tactOperator "&&"
+syn match tactOperator "\^"
 syn keyword tactKeyword
     \ as const let fun native primitive public extend self with
     \ get abstract virtual override extends mutates inline initOf
@@ -169,6 +171,7 @@ hi def link tactFunction Function
 " Statements & Keywords
 hi def link tactStatement Statement
 hi def link tactConditional Conditional
+hi def link tactException Exception
 hi def link tactRepeat Repeat
 hi def link tactOperator Operator
 hi def link tactKeyword Keyword
