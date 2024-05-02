@@ -33,7 +33,7 @@ syn match tactKeyword "\<receive(\@="
 syn keyword tactStatement return
 syn keyword tactConditional if else
 syn keyword tactException try catch
-syn keyword tactRepeat while repeat do until
+syn keyword tactRepeat while repeat do until foreach
 syn match tactOperator "!"
 syn match tactOperator "!="
 syn match tactOperator "!!"
@@ -61,7 +61,7 @@ syn match tactOperator "&"
 syn match tactOperator "&&"
 syn match tactOperator "\^"
 syn keyword tactKeyword
-    \ as const let fun native primitive public extend self with
+    \ as const let fun native primitive public extend self with in
     \ get abstract virtual override extends mutates inline initOf
 syn match tactKeyword "\<contract\>:\@!"
 syn match tactKeyword "\<message\>:\@!"
