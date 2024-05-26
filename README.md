@@ -442,6 +442,7 @@ Wish you good luck and fun exploring Tact! ⚡
 ## Useful Tact links
 
 - [Official Website](https://tact-lang.org/)
+- [Documentation](https://docs.tact-lang.org/)
 - Discussion Group in [Telegram](https://t.me/tactlang)
 - [X/Twitter](https://twitter.com/tact_language)
 
