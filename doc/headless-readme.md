@@ -1,4 +1,3 @@
-
 🚀 Adds syntax highlighting, grammar completion and miscellaneous support for the [Tact programming language](https://tact-lang.org/) to Vim 8+ and Neovim.
 
 ⚡ Tact is a new programming language for TON blockchain that is focused on efficiency and simplicity. It is designed to be easy to learn and use, and to be a good fit for smart contracts, because it is a statically typed language with a simple syntax and a powerful type system.
@@ -21,7 +20,7 @@ Note, that you can [disable highlighting of identifiers](#highlighting), if you 
 
 ## Installation
 
-### First time in Vim 8+? Read this instead
+### First time in Vim 8+? Read this!
 
 <details>
 <summary><em>Click to see</em></summary>
@@ -83,7 +82,7 @@ vim -u NONE -c 'helptags $HOME\vimfiles\pack\tact-lang\start\tact\doc' -c q
 
 </details>
 
-### Vim's 8+ built-in package manager
+### Built-in package manager in Vim 8+
 
 <details>
 <summary>Click to see</summary>

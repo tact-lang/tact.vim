@@ -26,7 +26,7 @@ Note, that you can [disable highlighting of identifiers](#highlighting), if you 
 
 ## Installation
 
-### First time in Vim 8+? Read this instead
+### First time in Vim 8+? Read this!
 
 <details>
 <summary><em>Click to see</em></summary>
@@ -88,7 +88,7 @@ vim -u NONE -c 'helptags $HOME\vimfiles\pack\tact-lang\start\tact\doc' -c q
 
 </details>
 
-### Vim's 8+ built-in package manager
+### Built-in package manager in Vim 8+
 
 <details>
 <summary>Click to see</summary>
