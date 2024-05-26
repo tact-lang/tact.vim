@@ -1,8 +1,10 @@
-name: Auto-generate Vimdoc using Pandoc
+name: Auto-generate Vimdoc using Pandoc in CI
 
 on:
-  push:
+  pull_request:
     branches: ["main"]
+    paths:
+      - README.md
 
 concurrency:
   group: ${{github.workflow}}-${{github.ref}}
