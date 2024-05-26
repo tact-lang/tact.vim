@@ -22,14 +22,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Create a headless README
+        run: tail --lines=+7 README.md > doc/headless-readme.md
+
       - name: Generate docs
         uses: kdheepak/panvimdoc@main
         with:
-          vimdoc: tact.vim
+          vimdoc: tact
+          pandoc: doc/headless-readme.md
           version: "Vim 8+ and Neovim >= 0.10.0"
           demojify: true
           treesitter: true
-          docmappingprojectname: false  # to reduce the noise
 
       - name: Push updated doc
         uses: stefanzweifel/git-auto-commit-action@v4
