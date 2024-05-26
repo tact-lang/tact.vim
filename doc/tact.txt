@@ -1,20 +1,15 @@
-*tact.vim.txt*     For Vim 8+ and Neovim >= 0.10.0    Last change: 2024 May 26
+*tact.txt*       For Vim 8+ and Neovim >= 0.10.0      Last change: 2024 May 26
 
 ==============================================================================
-Table of Contents                                 *tact.vim-table-of-contents*
+Table of Contents                                     *tact-table-of-contents*
 
-1. tact.vim                                                |tact.vim-tact.vim|
-  - Features                                      |tact.vim-tact.vim-features|
-  - Installation                              |tact.vim-tact.vim-installation|
-  - Configuration                            |tact.vim-tact.vim-configuration|
-  - Usage                                            |tact.vim-tact.vim-usage|
-  - UsefulTact links                      |tact.vim-tact.vim-usefultact-links|
-  - Credits                                        |tact.vim-tact.vim-credits|
-  - License                                        |tact.vim-tact.vim-license|
-
-==============================================================================
-1. tact.vim                                                *tact.vim-tact.vim*
-
+  - Features                                                   |tact-features|
+  - Installation                                           |tact-installation|
+  - Configuration                                         |tact-configuration|
+  - Usage                                                         |tact-usage|
+  - UsefulTact links                                   |tact-usefultact-links|
+  - Credits                                                     |tact-credits|
+  - License                                                     |tact-license|
 Adds syntax highlighting, grammar completion and miscellaneous support for the
 Tact programming language <https://tact-lang.org/> to Vim 8+ and Neovim.
 
@@ -24,27 +19,27 @@ be a good fit for smart contracts, because it is a statically typed language
 with a simple syntax and a powerful type system.
 
 
-FEATURES                                          *tact.vim-tact.vim-features*
+FEATURES                                                       *tact-features*
 
-- |tact.vim-syntax-highlighting|, which closely follows Tact specification in its Ohm grammar file <https://github.com/tact-lang/tact/blob/main/src/grammar/grammar.ohm>
-- |tact.vim-indentation|, as well as single-line and multi-line comments support
-- |tact.vim-basic-indentation-&-folding-support|
-- |tact.vim-compiler-integration-support|
-- |tact.vim-abbreviations| in INSERT mode
-- |tact.vim-auto-completion| (omnifunc/completefunc) support of static (global) and extension (methods on types) functions from stdlib, and all of the basic grammar
+- |tact-syntax-highlighting|, which closely follows Tact specification in its Ohm grammar file <https://github.com/tact-lang/tact/blob/main/src/grammar/grammar.ohm>
+- |tact-indentation|, as well as single-line and multi-line comments support
+- |tact-basic-indentation-&-folding-support|
+- |tact-compiler-integration-support|
+- |tact-abbreviations| in INSERT mode
+- |tact-auto-completion| (omnifunc/completefunc) support of static (global) and extension (methods on types) functions from stdlib, and all of the basic grammar
     (use `ctrl-x ctrl-o` to trigger it or setup shortcuts as you wish)
 - Basic linting, which automatically triggers on omnicompletion. Don’t forget to close your braces {}, parenthesis () and names, or use keyword completion instead ;)
 
 See the highlighting showcase below (uses `One Dark` color scheme). Note, that
-you can |tact.vim-disable-highlighting-of-identifiers|, if you want to :)
+you can |tact-disable-highlighting-of-identifiers|, if you want to :)
 
 
 
 
-INSTALLATION                                  *tact.vim-tact.vim-installation*
+INSTALLATION                                               *tact-installation*
 
 
-FIRST TIME IN VIM 8+? READ THIS INSTEAD ~
+FIRST TIME IN VIM 8+? READ THIS! ~
 
 Click to see ~
 
@@ -109,7 +104,7 @@ On Windows, do this in PowerShell:
 1. Start the Vim in the valid Tact project <https://docs.tact-lang.org/> to be able to use `:Tact` command for easy compilation or simply provide any `.tact` file otherwise. Happy coding 
 
 
-VIM’S8+ BUILT-IN PACKAGE MANAGER ~
+BUILT-INPACKAGE MANAGER IN VIM 8+ ~
 
 Click to see ~
 
@@ -197,7 +192,7 @@ Steps: 1. Add `tact.vim` to your lazy.nvim setup in `~/.config/nvim/init.lua`
 1. Run `:Lazy`.
 
 
-CONFIGURATION                                *tact.vim-tact.vim-configuration*
+CONFIGURATION                                             *tact-configuration*
 
 
 COMPLETION ~
@@ -432,7 +427,7 @@ Alternatively, add the following to the `init` key of your `lazy.nvim` config:
 LINTING ~
 
 Simply run `:Tact` command to try to compile using Tacts’ compiler and look
-for errors. See |tact.vim-usage-section| for more info on the command.
+for errors. See |tact-usage-section| for more info on the command.
 
 
 MISCELLANEOUS ~
@@ -460,7 +455,7 @@ to keyword completion (CTRL-xCTRL-n). But that’s not always the case, so if
 omnicompletion doesn’t show anything, try keyword one!
 
 
-USAGE                                                *tact.vim-tact.vim-usage*
+USAGE                                                             *tact-usage*
 
 For your convenience there’s a `:Tact` command available whenever you open
 any `.tact` files. It tries to run the `build` script from your `package.json`
@@ -479,21 +474,22 @@ repository based off of it.
 Wish you good luck and fun exploring Tact!
 
 
-USEFULTACT LINKS                          *tact.vim-tact.vim-usefultact-links*
+USEFULTACT LINKS                                       *tact-usefultact-links*
 
 - Official Website <https://tact-lang.org/>
+- Documentation <https://docs.tact-lang.org/>
 - Discussion Group in Telegram <https://t.me/tactlang>
 - X/Twitter <https://twitter.com/tact_language>
 
 
-CREDITS                                            *tact.vim-tact.vim-credits*
+CREDITS                                                         *tact-credits*
 
 Based on The Open Network <https://ton.org>.
 
 Built with by Novus Nota <https://github.com/novusnota>.
 
 
-LICENSE                                            *tact.vim-tact.vim-license*
+LICENSE                                                         *tact-license*
 
 Distributed under the same terms as Vim itself. See `:help license`.
 

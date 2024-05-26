@@ -1,9 +1,3 @@
-# tact.vim
-
-<center>
-  <img src=".github/BANNER.png" alt="Tact.Vim"/>
-</center>
-
 🚀 Adds syntax highlighting, grammar completion and miscellaneous support for the [Tact programming language](https://tact-lang.org/) to Vim 8+ and Neovim.
 
 ⚡ Tact is a new programming language for TON blockchain that is focused on efficiency and simplicity. It is designed to be easy to learn and use, and to be a good fit for smart contracts, because it is a statically typed language with a simple syntax and a powerful type system.
