@@ -26,8 +26,10 @@ Note, that you can [disable highlighting of identifiers](#highlighting), if you 
 
 ## Installation
 
+### First time in Vim 8+? Read this instead
+
 <details>
-<summary><em>First time in Vim 8+? Read this instead:</em></summary>
+<summary><em>Click to see</em></summary>
 
 Assuming you don't have any configuration in the `.vimrc` file, it's nicer to setup some sane defaults first before using this (or any other) plugin. Also, the following mini-guide will use the built-in package management for Vim 8+ and won't introduce anything fancy.
 
@@ -54,38 +56,42 @@ Note: on macOS the `<c-space>` is already bound in the system, so unless the ter
 
 5. It's also nice to source in the extended defaults provided by the [tpope/vim-sensible](https://github.com/tpope/vim-sensible). To do so, let's use the built-in package manager:
 
-On Windows, do this in PowerShell:
-
-```powershell
-git clone 'https://github.com/tpope/vim-sensible.git' $HOME\vimfiles\pack\tpope\start\sensible
-```
-
 On Linux, macOS or *BSD:
 
 ```bash
 git clone "https://github.com/tpope/vim-sensible.git" ~/.vim/pack/tpope/start/sensible
 ```
 
-6. Finally, let's install ⚡ [tact.vim](https://github.com/tact-lang/tact.vim):
-
 On Windows, do this in PowerShell:
 
 ```powershell
-git clone 'https://github.com/tact-lang/tact.vim.git' $HOME\vimfiles\pack\tact-lang\start\tact
+git clone 'https://github.com/tpope/vim-sensible.git' $HOME\vimfiles\pack\tpope\start\sensible
 ```
+
+6. Finally, let's install ⚡ [tact.vim](https://github.com/tact-lang/tact.vim):
 
 On Linux, macOS or *BSD:
 
 ```bash
 git clone "https://github.com/tact-lang/tact.vim.git" ~/.vim/pack/tact-lang/start/tact
+vim -u NONE -c "helptags $HOME/.vim/pack/tact-lang/start/tact/doc" -c q
 ```
 
-7. Start the Vim in the [valid Tact project](https://docs.tact-lang.org/start) to be able to use `:Tact` command for easy compilation or simply provide any `.tact` file otherwise. Happy coding 🚀
+On Windows, do this in PowerShell:
+
+```powershell
+git clone 'https://github.com/tact-lang/tact.vim.git' $HOME\vimfiles\pack\tact-lang\start\tact
+vim -u NONE -c 'helptags $HOME\vimfiles\pack\tact-lang\start\tact\doc' -c q
+```
+
+7. Start the Vim in the [valid Tact project](https://docs.tact-lang.org/) to be able to use `:Tact` command for easy compilation or simply provide any `.tact` file otherwise. Happy coding 🚀
 
 </details>
 
+### Vim's 8+ built-in package manager
+
 <details>
-<summary>Vim's 8+ built-in package manager</summary>
+<summary>Click to see</summary>
 
 This is the recommended installation method if you use at least Vim 8 and you don't use another package manager.
 More about Vim's built-in package manager: [`:help packages`](https://vimhelp.org/repeat.txt.html#packages).
@@ -94,20 +100,24 @@ For Linux/macOS:
 
 ```sh
 git clone "https://github.com/tact-lang/tact.vim.git" ~/.vim/pack/tact-lang/start/tact
+vim -u NONE -c "helptags $HOME/.vim/pack/tact-lang/start/tact/doc" -c q
 ```
 
 For Windows/PowerShell:
 
 ```powershell
 git clone 'https://github.com/tact-lang/tact.vim.git' $HOME\vimfiles\pack\tact-lang\start\tact
+vim -u NONE -c 'helptags $HOME\vimfiles\pack\tact-lang\start\tact\doc' -c q
 ```
 
 Don't forget to restart Vim after :)
 
 </details>
 
+### Vundle
+
 <details>
-<summary>Vundle</summary>
+<summary>Click to see</summary>
 
 Info about it: [Vundle repository](https://github.com/VundleVim/Vundle.vim).
 
@@ -128,8 +138,10 @@ Steps:
 
 </details>
 
+### vim-plug
+
 <details>
-<summary>vim-plug</summary>
+<summary>Click to see</summary>
 
 Info about it: [vim-plug repository](https://github.com/junegunn/vim-plug).
 
@@ -150,8 +162,10 @@ Steps:
 
 </details>
 
+### lazy.nvim (Neovim-only)
+
 <details>
-<summary>lazy.nvim (Neovim-only)</summary>
+<summary>Click to see</summary>
 
 Info about it:
 - [lazy.nvim repository](https://github.com/folke/lazy.nvim).
@@ -163,7 +177,7 @@ Steps:
    ```lua
     require('lazy').setup({
       -- ...
-      { 'tact-lang/tact.vim', },
+      { 'tact-lang/tact.vim' },
       -- ...
     }, {})
    ```

@@ -1,0 +1,33 @@
+name: Auto-generate Vimdoc using Pandoc
+
+on:
+  push:
+    branches: ["main"]
+
+concurrency:
+  group: ${{github.workflow}}-${{github.ref}}
+  cancel-in-progress: false
+
+jobs:
+  custom_test:
+    runs-on: ubuntu-latest
+    name: pandoc to vimdoc
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Generate docs
+        uses: kdheepak/panvimdoc@main
+        with:
+          vimdoc: tact.vim
+          version: "Vim 8+ and Neovim >= 0.10.0"
+          demojify: true
+          treesitter: true
+
+      - name: Push updated doc
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "chore: auto-generate vimdoc via panvimdoc"
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "github-actions[bot]@users.noreply.github.com"
+          commit_author: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+          branch: ${{ github.head_ref }}
