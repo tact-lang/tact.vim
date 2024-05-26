@@ -29,6 +29,7 @@ jobs:
           version: "Vim 8+ and Neovim >= 0.10.0"
           demojify: true
           treesitter: true
+          docmappingprojectname: false  # to reduce the noise
 
       - name: Push updated doc
         uses: stefanzweifel/git-auto-commit-action@v4
