@@ -39,7 +39,7 @@ you can |tact-disable-highlighting-of-identifiers|, if you want to :)
 INSTALLATION                                               *tact-installation*
 
 
-FIRST TIME IN VIM 8+? READ THIS INSTEAD ~
+FIRST TIME IN VIM 8+? READ THIS! ~
 
 Click to see ~
 
@@ -104,7 +104,7 @@ On Windows, do this in PowerShell:
 1. Start the Vim in the valid Tact project <https://docs.tact-lang.org/> to be able to use `:Tact` command for easy compilation or simply provide any `.tact` file otherwise. Happy coding 
 
 
-VIM’S8+ BUILT-IN PACKAGE MANAGER ~
+BUILT-INPACKAGE MANAGER IN VIM 8+ ~
 
 Click to see ~
 
