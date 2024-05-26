@@ -1,0 +1,502 @@
+*tact.vim.txt*     For Vim 8+ and Neovim >= 0.10.0    Last change: 2024 May 26
+
+==============================================================================
+Table of Contents                                 *tact.vim-table-of-contents*
+
+1. tact.vim                                                |tact.vim-tact.vim|
+  - Features                                      |tact.vim-tact.vim-features|
+  - Installation                              |tact.vim-tact.vim-installation|
+  - Configuration                            |tact.vim-tact.vim-configuration|
+  - Usage                                            |tact.vim-tact.vim-usage|
+  - UsefulTact links                      |tact.vim-tact.vim-usefultact-links|
+  - Credits                                        |tact.vim-tact.vim-credits|
+  - License                                        |tact.vim-tact.vim-license|
+
+==============================================================================
+1. tact.vim                                                *tact.vim-tact.vim*
+
+Adds syntax highlighting, grammar completion and miscellaneous support for the
+Tact programming language <https://tact-lang.org/> to Vim 8+ and Neovim.
+
+Tact is a new programming language for TON blockchain that is focused on
+efficiency and simplicity. It is designed to be easy to learn and use, and to
+be a good fit for smart contracts, because it is a statically typed language
+with a simple syntax and a powerful type system.
+
+
+FEATURES                                          *tact.vim-tact.vim-features*
+
+- |tact.vim-syntax-highlighting|, which closely follows Tact specification in its Ohm grammar file <https://github.com/tact-lang/tact/blob/main/src/grammar/grammar.ohm>
+- |tact.vim-indentation|, as well as single-line and multi-line comments support
+- |tact.vim-basic-indentation-&-folding-support|
+- |tact.vim-compiler-integration-support|
+- |tact.vim-abbreviations| in INSERT mode
+- |tact.vim-auto-completion| (omnifunc/completefunc) support of static (global) and extension (methods on types) functions from stdlib, and all of the basic grammar
+    (use `ctrl-x ctrl-o` to trigger it or setup shortcuts as you wish)
+- Basic linting, which automatically triggers on omnicompletion. Don’t forget to close your braces {}, parenthesis () and names, or use keyword completion instead ;)
+
+See the highlighting showcase below (uses `One Dark` color scheme). Note, that
+you can |tact.vim-disable-highlighting-of-identifiers|, if you want to :)
+
+
+
+
+INSTALLATION                                  *tact.vim-tact.vim-installation*
+
+
+FIRST TIME IN VIM 8+? READ THIS INSTEAD ~
+
+Click to see ~
+
+Assuming you don’t have any configuration in the `.vimrc` file, it’s nicer
+to setup some sane defaults first before using this (or any other) plugin.
+Also, the following mini-guide will use the built-in package management for Vim
+8+ and won’t introduce anything fancy.
+
+Steps: 1. Get yourself a Vim of version 8+ installed and make sure to have git
+installed and present on your path as well 2. Create a `~/.vimrc` file (or
+`~/_vimrc` if you’re on Windows) 3. Without such file there were sourced
+defaults by the Vim authors, but once it’s created, we have to put them back
+explicitly by adding those lines in and saving changes :w
+
+>vim
+    unlet! skip_defaults_vim
+    source $VIMRUNTIME/defaults.vim
+<
+
+1. Whilewe’re here, let’s add some `tact.vim`-specific stuff in as well. This time save and quit as we no longer need to add anything (:wq):
+
+>vim
+    let g:tact_style_guide = 1  " Enabling default indentation style
+    
+    " the following is optional and added purely for your convenience:
+    inoremap <silent> <c-space> <c-x><c-o>  " Open completion menu on ctrl-space
+<
+
+Note: on macOS the `<c-space>` is already bound in the system, so unless the
+terminal intercepts it you’ll have to use a different keybinding.
+
+1. It’s also nice to source in the extended defaults provided by the tpope/vim-sensible <https://github.com/tpope/vim-sensible>. To do so, let’s use the built-in package manager:
+
+On Linux, macOS or BSD:
+
+>bash
+    git clone "https://github.com/tpope/vim-sensible.git" ~/.vim/pack/tpope/start/sensible
+<
+
+On Windows, do this in PowerShell:
+
+>powershell
+    git clone 'https://github.com/tpope/vim-sensible.git' $HOME\vimfiles\pack\tpope\start\sensible
+<
+
+1. Finally, let’s install tact.vim <https://github.com/tact-lang/tact.vim>
+
+OnLinux, macOS or BSD:
+
+>bash
+    git clone "https://github.com/tact-lang/tact.vim.git" ~/.vim/pack/tact-lang/start/tact
+    vim -u NONE -c "helptags $HOME/.vim/pack/tact-lang/start/tact/doc" -c q
+<
+
+On Windows, do this in PowerShell:
+
+>powershell
+    git clone 'https://github.com/tact-lang/tact.vim.git' $HOME\vimfiles\pack\tact-lang\start\tact
+    vim -u NONE -c 'helptags $HOME\vimfiles\pack\tact-lang\start\tact\doc' -c q
+<
+
+1. Start the Vim in the valid Tact project <https://docs.tact-lang.org/> to be able to use `:Tact` command for easy compilation or simply provide any `.tact` file otherwise. Happy coding 
+
+
+VIM’S8+ BUILT-IN PACKAGE MANAGER ~
+
+Click to see ~
+
+This is the recommended installation method if you use at least Vim 8 and you
+don’t use another package manager. More about Vim’s built-in package
+manager: `:help packages` <https://vimhelp.org/repeat.txt.html#packages>.
+
+For Linux/macOS:
+
+>sh
+    git clone "https://github.com/tact-lang/tact.vim.git" ~/.vim/pack/tact-lang/start/tact
+    vim -u NONE -c "helptags $HOME/.vim/pack/tact-lang/start/tact/doc" -c q
+<
+
+For Windows/PowerShell:
+
+>powershell
+    git clone 'https://github.com/tact-lang/tact.vim.git' $HOME\vimfiles\pack\tact-lang\start\tact
+    vim -u NONE -c 'helptags $HOME\vimfiles\pack\tact-lang\start\tact\doc' -c q
+<
+
+Don’t forget to restart Vim after :)
+
+
+VUNDLE ~
+
+Click to see ~
+
+Info about it: Vundle repository <https://github.com/VundleVim/Vundle.vim>.
+
+Steps: 1. Add `tact.vim` to your plugin list in `~/.vimrc` (or `~/_vimrc` on
+Windows) by inserting the line that starts with `Plugin`
+
+>vim
+    call vundle#begin()
+      " ...
+      Plugin 'tact-lang/tact.vim'
+      " ...
+    call vundle#end()
+<
+
+1. RestartVim or run `:source ~/.vimrc`.
+2. Run `:PluginInstall`.
+
+
+VIM-PLUG ~
+
+Click to see ~
+
+Info about it: vim-plug repository <https://github.com/junegunn/vim-plug>.
+
+Steps: 1. Add `tact.vim` to your plugin list in `~/.vimrc` (or `~/_vimrc` on
+Windows) by inserting the line that starts with `Plug`
+
+>vim
+    call plug#begin()
+      "...
+      Plug 'tact-lang/tact.vim'
+      "...
+    call plug#end()
+<
+
+1. RestartVim or run `:source ~/.vimrc`.
+2. Run `:PlugInstall`.
+
+
+LAZY.NVIM (NEOVIM-ONLY) ~
+
+Click to see ~
+
+Info about it: - lazy.nvim repository <https://github.com/folke/lazy.nvim>. -
+Installation of lazy.nvim <https://github.com/folke/lazy.nvim#-installation>
+
+Steps: 1. Add `tact.vim` to your lazy.nvim setup in `~/.config/nvim/init.lua`
+(or `~/AppData/Local/nvim/init.lua` on Windows):
+
+>lua
+     require('lazy').setup({
+       -- ...
+       { 'tact-lang/tact.vim' },
+       -- ...
+     }, {})
+<
+
+1. Run `:Lazy`.
+
+
+CONFIGURATION                                *tact.vim-tact.vim-configuration*
+
+
+COMPLETION ~
+
+By default this plugin sets an `omnifunc` option to provide auto-completions by
+triggering CTRL-xCTRL-o in INSERT mode. However, if you’re using an LSP
+client for Tact language, it may overwrite this option and disable the
+completion and basic linting capabilities provided by this plugin alongside of
+it.
+
+In order to prevent that behaviour you may want to bind completion features of
+this plugin to a `competefunc` option (which is quite conveniently triggered by
+CTRL-xCTRL-u in INSERT mode). Add the following to your `~/.vimrc` (or
+`~/_vimrc` on Windows) if you’d like to prefer and bind `completefunc` over
+`omnifunc`
+
+>vim
+    " CTRL-x CTRL-u instead of CTRL-x CTRL-o
+    let g:tact_prefer_completefunc = 1
+<
+
+Neovim-only ~
+
+>lua
+    vim.g.tact_prefer_completefunc = 1
+<
+
+Alternatively,add the following to the `init` key of your `lazy.nvim` config:
+
+>lua
+    require('lazy').setup({
+      -- ...
+      {
+        'tact-lang/tact.vim',
+        init = function()
+          -- ...
+          vim.g.tact_prefer_completefunc = 1
+          -- ...
+        end,
+      },
+      -- ...
+    }, {})
+<
+
+
+INDENTATION ~
+
+Add the following to your `~/.vimrc` (or `~/_vimrc` on Windows) to enable
+preferred indentation style for Tact:
+
+>vim
+    let g:tact_style_guide = 1
+<
+
+Neovim-only ~
+
+>lua
+    vim.g.tact_style_guide = 1
+<
+
+Alternatively, add the following to the `init` key of your `lazy.nvim` config:
+
+>lua
+    require('lazy').setup({
+      -- ...
+      {
+        'tact-lang/tact.vim',
+        init = function()
+          -- ...
+          vim.g.tact_style_guide = 1
+          -- ...
+        end,
+      },
+      -- ...
+    }, {})
+<
+
+
+HIGHLIGHTING ~
+
+If you want to disable highlighting of identifiers: variables and constants
+(but not structures), add the following option:
+
+>vim
+    let g:tact_blank_identifiers = 1
+<
+
+Neovim-only ~
+
+>lua
+    vim.g.tact_blank_identifiers = 1
+<
+
+Alternatively, add the following to the `init` key of your `lazy.nvim` config:
+
+>lua
+    require('lazy').setup({
+      -- ...
+      {
+        'tact-lang/tact.vim',
+        init = function()
+          -- ...
+          vim.g.tact_blank_identifiers = 1
+          -- ...
+        end,
+      },
+      -- ...
+    }, {})
+<
+
+To disable highlighting of structures (names of traits, messages, contracts and
+structs), add the following:
+
+>vim
+    let g:tact_blank_structures = 1
+<
+
+Neovim-only ~
+
+>lua
+    vim.g.tact_blank_structures = 1
+<
+
+Alternatively, add the following to the `init` key of your `lazy.nvim` config:
+
+>lua
+    require('lazy').setup({
+      -- ...
+      {
+        'tact-lang/tact.vim',
+        init = function()
+          -- ...
+          vim.g.tact_blank_structures = 1
+          -- ...
+        end,
+      },
+      -- ...
+    }, {})
+<
+
+
+FORMATTING ~
+
+Basic code formatting can be done by a series of Vim motions: `gg=G` (plus
+Ctrl-o twice to return to the original cursor position), or by invoking a
+`:TactFmt` command, which does all that for you _without_ messing up with your
+cursor. Use both with caution, as Vim-native indentation handling is known to
+be prone to errors.
+
+
+FOLDING ~
+
+To enable code-folding add the following snippet. This one might have an impact
+on editing performance, proceed with caution:
+
+>vim
+    augroup tact_folding
+        au!
+        au FileType tact setlocal foldmethod=syntax
+    augroup END
+<
+
+Neovim-only ~
+
+Make a `~/.config/nvim/after/ftplugin` directory
+(`~/AppData/Local/nvim/after/ftplugin`) and put the file `tact.lua` in it with
+the following contents:
+
+>lua
+    vim.opt.foldmethod = "syntax"
+    vim.opt.foldenable = false  -- disables automatic folding on file opening
+<
+
+
+ABBREVIATIONS ~
+
+To trigger an abbreviation, type it in followed by punctuation such as a space
+or comma, and it would get expanded into a code snippet. It’s advised to use
+space for this as it usually produces best results.
+
+These abbreviations (and auto-completions of their names) are available right
+away:
+
+1. `a_fun` — expands to the function declaration
+2. `a_extfun` — expands to the extension function declaration
+3. `a_mutfun` — expands to the mutable function declaration
+4. `a_natfun` — expands to the native function declaration
+5. `a_co` — expands to the contract declaration
+6. `a_tr` — expands to the trait declaration
+7. `a_st` — expands to the struct declaration
+8. `a_me` — expands to the message declaration
+9. `a_se` — expands to send(SendParameters{…}) call
+
+**Keep in mind** that abbreviations are always there and you can always type
+them in, even if they’re not shown by omnicompletion when deemed not suitable
+for the current completion context.
+
+To avoid expansion in INSERT mode, type Ctrl-V after the last character of the
+abbreviation (on Windows, type Ctrl-Q instead of Ctrl-V).
+
+To completely disable abbreviations provided by this plugin only, add this to
+your `~/.vimrc` (or `~/_vimrc` on Windows):
+
+>vim
+    let g:tact_disable_abbreviations = 1
+<
+
+Neovim-only ~
+
+>lua
+    vim.g.tact_disable_abbreviations = 1
+<
+
+Alternatively, add the following to the `init` key of your `lazy.nvim` config:
+
+>lua
+    require('lazy').setup({
+      -- ...
+      {
+        'tact-lang/tact.vim',
+        init = function()
+          -- ...
+          vim.g.tact_disable_abbreviations = 1
+          -- ...
+        end,
+      },
+      -- ...
+    }, {})
+<
+
+
+LINTING ~
+
+Simply run `:Tact` command to try to compile using Tacts’ compiler and look
+for errors. See |tact.vim-usage-section| for more info on the command.
+
+
+MISCELLANEOUS ~
+
+For the ease of omnicompletion usage, you may want to add this or similar
+bindings, but they are not obligatory to use the plugin:
+
+>vim
+    " Open omnicompletion menu on ctrl-space
+    inoremap <silent> <c-space> <c-x><c-o>
+<
+
+Neovim-only ~
+
+>lua
+    vim.keymap.set('i', '<c-space>', '<c-x><c-o>', { noremap = true, silent = true})
+<
+
+Note, that on macOS there’s a default system-wide keyboard shortcut for
+CtrlSpace (`^space`). You may want to change it to be CmdSpace instead or use
+the different binding in Vim.
+
+At times when omnicompletion (CTRL-xCTRL-o) can’t complete much it fallbacks
+to keyword completion (CTRL-xCTRL-n). But that’s not always the case, so if
+omnicompletion doesn’t show anything, try keyword one!
+
+
+USAGE                                                *tact.vim-tact.vim-usage*
+
+For your convenience there’s a `:Tact` command available whenever you open
+any `.tact` files. It tries to run the `build` script from your `package.json`
+project file, which, as shown in this official example here
+<https://docs.tact-lang.org/start#getting-started-from-scratch>, should invoke
+a Tact compiler. You’re expected to have a Node.js of the current LTS (or
+later) version installed on your system, alongside of `npm` for the `:Tact`
+command to work.
+
+It’s generally recommended to go over the example
+<https://docs.tact-lang.org/start#getting-started-from-scratch>, as it shows
+how to get started with Tact. Alternatively, use the official project template
+<https://github.com/tact-lang/tact-template>either copy or create a new
+repository based off of it.
+
+Wish you good luck and fun exploring Tact!
+
+
+USEFULTACT LINKS                          *tact.vim-tact.vim-usefultact-links*
+
+- Official Website <https://tact-lang.org/>
+- Discussion Group in Telegram <https://t.me/tactlang>
+- X/Twitter <https://twitter.com/tact_language>
+
+
+CREDITS                                            *tact.vim-tact.vim-credits*
+
+Based on The Open Network <https://ton.org>.
+
+Built with by Novus Nota <https://github.com/novusnota>.
+
+
+LICENSE                                            *tact.vim-tact.vim-license*
+
+Distributed under the same terms as Vim itself. See `:help license`.
+
+Generated by panvimdoc <https://github.com/kdheepak/panvimdoc>
+
+vim:tw=78:ts=8:noet:ft=help:norl:

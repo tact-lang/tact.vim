@@ -1,19 +1,26 @@
-name: Auto-generate Vimdoc using Pandoc
+name: Auto-generate Vimdoc using Pandoc in CI
 
 on:
-  push:
+  pull_request:
     branches: ["main"]
+    paths:
+      - README.md
+      - .github/**
 
+# Set permissions of the GITHUB_TOKEN to allow modifications to files
+permissions:
+  contents: write
+
+# Allow one concurrent deployment
 concurrency:
   group: ${{github.workflow}}-${{github.ref}}
   cancel-in-progress: false
 
 jobs:
-  custom_test:
+  docs:
     runs-on: ubuntu-latest
-    name: pandoc to vimdoc
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Generate docs
         uses: kdheepak/panvimdoc@main

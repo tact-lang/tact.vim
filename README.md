@@ -36,7 +36,7 @@ Assuming you don't have any configuration in the `.vimrc` file, it's nicer to se
 Steps:
 1. Get yourself a Vim of version 8+ installed and make sure to have git installed and present on your path as well
 2. Create a `~/.vimrc` file (or `~/_vimrc` if you're on Windows)
-3. Without such file there were sourced defaults by the Vim authors, but once it's created, we have to put them back explicitly by adding those lines in and saving changes <kbd>:w</kbd>: 
+3. Without such file there were sourced defaults by the Vim authors, but once it's created, we have to put them back explicitly by adding those lines in and saving changes <kbd>:w</kbd>:
 
 ```vim
 unlet! skip_defaults_vim
