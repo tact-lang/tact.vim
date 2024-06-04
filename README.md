@@ -1,8 +1,6 @@
 # tact.vim
 
-<center>
-  <img src="https://raw.githubusercontent.com/tact-lang/tact.vim/main/.github/BANNER.png" alt="Tact.Vim"/>
-</center>
+<img src="https://raw.githubusercontent.com/tact-lang/tact.vim/main/.github/BANNER.png" alt="Tact.Vim"/>
 
 🚀 Adds syntax highlighting, grammar completion and miscellaneous support for the [Tact programming language](https://tact-lang.org/) to Vim 8+ and Neovim.
 
