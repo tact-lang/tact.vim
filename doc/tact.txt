@@ -1,4 +1,4 @@
-*tact.txt*       For Vim 8+ and Neovim >= 0.10.0      Last change: 2024 May 26
+*tact.txt*      For Vim 8+ and Neovim >= 0.10.0      Last change: 2024 June 04
 
 ==============================================================================
 Table of Contents                                     *tact-table-of-contents*
