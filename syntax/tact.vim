@@ -55,11 +55,15 @@ syn match tactOperator "<<"
 syn match tactOperator ">"
 syn match tactOperator ">="
 syn match tactOperator ">>"
+syn match tactOperator "\~"
 syn match tactOperator "|"
+syn match tactOperator "|="
 syn match tactOperator "||"
 syn match tactOperator "&"
+syn match tactOperator "&="
 syn match tactOperator "&&"
 syn match tactOperator "\^"
+syn match tactOperator "\^="
 syn keyword tactKeyword
     \ as const let fun native primitive public extend self with in
     \ get abstract virtual override extends mutates inline initOf
@@ -101,7 +105,7 @@ syn region tactGenericTypeBounds
     \ contains=tactContainedComma,tactContainedAs,tactType,tactNativeType,tactStructure
 syn match tactContainedComma contained ","
 syn keyword tactContainedAs contained as
-syn match tactStructure "\zs\<\([A-Z_]\w*\)\>\ze"
+syn match tactStructure "\zs\<\([A-Z]\w*\)\>\ze"
 
 " Special chars & Punctuation
 syn match tactSpecialChar
@@ -114,6 +118,7 @@ syn region tactCommentLine
     \ start="//" end="$" contains=tactTodo,tactSpecialChar
 syn region tactCommentBlock
     \ start="/\*" end="\*/" contains=tactTodo,tactSpecialChar
+syn match tactUnusedIdentifier "\zs\<\(_\)\>\ze"
 
 " Literals & primitives
 syn keyword tactConstant null
@@ -127,6 +132,9 @@ syn match tactOctNumber "\<0[oO]\o\%(_\?\o\)*\>"
 syn match tactBinNumber "\<0[bB][01]\%(_\?[01]\)*\>"
 syn keyword tactBool true false
 
+" Errorneous constructs
+syn match tactInvalidIdentifier "\zs\<\(\%(__gen\|__tact\)[a-zA-Z0-9_]*\)\>\ze"
+
 " }}}1
 
 ""
@@ -134,6 +142,9 @@ syn keyword tactBool true false
 " Section: Highlights
 " {{{1
 ""
+
+" Erroneous constructs
+hi def link tactInvalidIdentifier Error
 
 " Special symbols & Punctuation
 hi def link tactSpecialChar SpecialChar
@@ -149,6 +160,7 @@ hi def link tactTodo Todo
 hi def link tactTodo Todo
 hi def link tactCommentLine Comment
 hi def link tactCommentBlock Comment
+hi def link tactUnusedIdentifier Comment
 
 " Constants & Literals
 if !exists("g:tact_blank_identifiers")

@@ -394,7 +394,7 @@ function! s:ScanBodyForDefinitions(cursor_lnum, current_lnum, end_lnum, function
 
     " parse a definition
     let l:definition_name_arr = []
-    silent! call substitute(l:buf_line, '^let\s\+\(\w\+\)\s*:', '\=add(l:definition_name_arr,submatch(1))', '')
+    silent! call substitute(l:buf_line, '^let\s\+\(\w\+\)\s*\%(:\|=\)', '\=add(l:definition_name_arr,submatch(1))', '')
 
     " skip if not matched
     if empty(l:definition_name_arr)
@@ -404,9 +404,11 @@ function! s:ScanBodyForDefinitions(cursor_lnum, current_lnum, end_lnum, function
     " extract type from the let declaration
     let l:definition_type_arr = s:RecognizeTypeAsList(l:buf_line, '', '\%(;\|=.\{-};\?\)$')
     if empty(l:definition_type_arr)
-      call winrestview(l:winview)
-      call s:ErrorMsg('Invalid type syntax on line ' . l:local_lnum)
-      return []
+      " No type provided, lets just skip the definition
+      continue
+      " call winrestview(l:winview)
+      " call s:ErrorMsg('Invalid type syntax on line ' . l:local_lnum)
+      " return []
     endif
 
     let l:definition_parsed_type_arr = s:ParseTypeIntoList(l:local_lnum, l:definition_name_arr[0], trim(l:definition_type_arr[0]))
@@ -558,6 +560,24 @@ function! s:ParseSpecialParamIntoList(special_fun_name, str, lnum)
         \ || a:str =~# '^' . a:special_fun_name . '\s*(\s*)'
     " everything is correct, it's just that there are no params
     return [{}]
+  endif
+
+  " receive() and external() may also have a constant string identifier
+  if a:str =~# '^' . a:special_fun_name . '\s*(\s*.\{-}\s*)'
+    silent! call substitute(a:str,
+          \ '^' . a:special_fun_name . '\s*(\(\s*\w\+\s*\))',
+          \ '\=add(l:special_param_arr,submatch(1))',
+          \ '')
+    if !empty(l:special_param_arr)
+      let l:special_param_name = trim(l:special_param_arr[0])
+      let l:special_param_type_parsed = ['String']
+
+      let l:res = {}
+      let l:res[l:special_param_name] = l:special_param_type_parsed
+
+      " return the only param found
+      return [l:res]
+    endif
   endif
 
   " display an error message
@@ -1136,7 +1156,7 @@ function! tact#Complete(findstart, base) abort
         silent! call substitute(l:buf_line, '^\(\w\+\)\s*:', '\=add(l:struct_field_name_arr,submatch(1))', '')
 
         " checking the field type validity
-        let l:struct_field_type_arr = s:RecognizeTypeAsList(l:buf_line, '', ';$')
+        let l:struct_field_type_arr = s:RecognizeTypeAsList(l:buf_line, '', ';\?$')
 
         " if either is still empty -- syntax error
         if empty(l:struct_field_name_arr) || empty(l:struct_field_type_arr)
