@@ -44,7 +44,7 @@ let s:tact_stdlib_functions = {
       \ , 'pow(': 'Int'
       \ , 'pow2(': 'Int'
       \ , 'throw(': ''
-      \ , 'nativeThrowWhen(': ''
+      \ , 'nativeThrowIf(': ''
       \ , 'nativeThrowUnless(': ''
       \ , 'getConfigParam(': 'Cell?'
       \ , 'nativeRandomize(': ''
