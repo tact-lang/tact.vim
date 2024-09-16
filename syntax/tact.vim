@@ -89,7 +89,6 @@ syn region tactNativeInterfaceIdentifier
     \ keepend skipwhite skipempty
 syn region tactNativeInterfaceIdentifierName
     \ oneline start=+\z(["]\)+ end=+\z1+ contains=tactSpecialChar keepend
-syn keyword tactAsmKeyword asm
 syn match tactAsmArrangement
     \ "asm" nextgroup=tactAsmArrangementParens skipwhite skipempty
 syn region tactAsmArrangementParens
@@ -193,8 +192,6 @@ hi def link tactRepeat Repeat
 hi def link tactOperator Operator
 hi def link tactArrowRight Operator
 hi def link tactKeyword Keyword
-hi def link tactAsmKeyword Keyword
-hi def link tactAsmArrangement Keyword
 hi def link tactContainedAs Keyword
 
 " Imports & Pre-processing
@@ -203,6 +200,7 @@ hi def link tactNativeFunction Macro
 hi def link tactNativeIdentifierName PreProc
 hi def link tactNativeInterface Macro
 hi def link tactNativeInterfaceIdentifierName String
+hi def link tactAsmArrangement Macro
 
 " Types & Structures
 hi def link tactType Type
