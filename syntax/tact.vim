@@ -72,31 +72,36 @@ syn match tactKeyword "\<message\>:\@!"
 syn match tactKeyword "\<struct\>:\@!"
 syn match tactKeyword "\<trait\>:\@!"
 
-" Imports & Bindings to FunC
+" Imports & Bindings to FunC or Fift assembly
 syn keyword tactImport import
 syn match tactNativeFunction
-    \ "@\<name\>" nextgroup=tactNativeIdentifier skipwhite
+    \ "@\<name\>" nextgroup=tactNativeIdentifier skipwhite skipempty
 syn region tactNativeIdentifier
     \ contained matchgroup=tactNativeFunctionParens
     \ start="(" end=")" contains=tactNativeIdentifierName
     \ keepend skipwhite skipempty
 syn match tactNativeIdentifierName contained ".*"
 syn match tactNativeInterface
-    \ "@\<interface\>" nextgroup=tactNativeInterfaceIdentifier skipwhite
+    \ "@\<interface\>" nextgroup=tactNativeInterfaceIdentifier skipwhite skipempty
 syn region tactNativeInterfaceIdentifier
     \ contained matchgroup=tactNativeFunctionParens
     \ start="(" end=")" contains=tactNativeInterfaceIdentifierName
     \ keepend skipwhite skipempty
 syn region tactNativeInterfaceIdentifierName
     \ oneline start=+\z(["]\)+ end=+\z1+ contains=tactSpecialChar keepend
+syn keyword tactAsmKeyword asm
+syn match tactAsmArrangement
+    \ "asm" nextgroup=tactAsmArrangementParens skipwhite skipempty
+syn region tactAsmArrangementParens
+    \ contained matchgroup=tactNativeFunctionParens
+    \ start="(" end=")" contains=tactIdentifier,tactDecNumber,tactDecNumberLeadingZero,tactArrowRight
+    \ keepend skipwhite skipempty
+syn match tactArrowRight "->"
 
 " Types & Structures
 syn keyword tactType
     \ Int Bool Address Slice Cell Builder String StringBuilder
-syn keyword tactNativeType
-    \ int8 int16 int32 int64 int128 int256
-    \ uint8 uint16 uint32 uint64 uint128 uint256
-    \ int257 coins remaining bytes32 bytes64
+syn match tactNativeType "\%(coins\|remaining\|bytes32\|bytes64\|int257\|u\?int\%(2[0-5][0-6]\|[0-9]\d\?\)\)"
 syn match tactGenericType
     \ "\<\(map\|bounced\)\><\@=" nextgroup=tactGenericTypeBounds skipwhite
 syn region tactGenericTypeBounds
@@ -186,7 +191,10 @@ hi def link tactConditional Conditional
 hi def link tactException Exception
 hi def link tactRepeat Repeat
 hi def link tactOperator Operator
+hi def link tactArrowRight Operator
 hi def link tactKeyword Keyword
+hi def link tactAsmKeyword Keyword
+hi def link tactAsmArrangement Keyword
 hi def link tactContainedAs Keyword
 
 " Imports & Pre-processing
