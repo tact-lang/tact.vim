@@ -100,7 +100,7 @@ syn match tactArrowRight "->"
 " Types & Structures
 syn keyword tactType
     \ Int Bool Address Slice Cell Builder String StringBuilder
-syn match tactNativeType "\%(coins\|remaining\|bytes32\|bytes64\|int257\|u\?int\%(2[0-5][0-6]\|[0-9]\d\?\)\)"
+syn match tactNativeType "\%(coins\|remaining\|bytes32\|bytes64\|int257\|u\?int\%(2[0-5][0-6]\|[1-9]\d\?\)\)"
 syn match tactGenericType
     \ "\<\(map\|bounced\)\><\@=" nextgroup=tactGenericTypeBounds skipwhite
 syn region tactGenericTypeBounds
