@@ -1075,6 +1075,12 @@ function! tact#Complete(findstart, base) abort
       continue
     endif
 
+    " skip asm arrangements
+    if l:buf_line =~# '^asm\s\+\%((\%(\s\+\|->\|[a-zA-Z_][a-zA-Z0-9_]*\|[0-9]*\)*)\)\?'
+      let l:buf_i += 1
+      continue
+    endif
+
     " message
     if l:buf_line =~# '^message\s\+\%(([0-9A-Za-z]\+)\)\?\s*\w\+\s*{'
       " {{{3
