@@ -10,7 +10,7 @@
 
 " stdlib_functions {{{2
 let s:tact_stdlib_functions = {
-      \ 'send(SendParameters{': ''
+      \ 'send(SendParameters{': 'Int'
       \ , 'sender()': 'Address'
       \ , 'require(': ''
       \ , 'now()': 'Int'
@@ -53,6 +53,22 @@ let s:tact_stdlib_functions = {
       \ , 'nativeRandom()': 'Int'
       \ , 'nativeRandomInterval(': 'Int'
       \ , 'nativeReserve(': ''
+      \ , 'nativeSendMessage(': ''
+      \ , 'nativeSendMessageReturnForwardFee(': 'Int'
+      \ , 'gasConsumed()': 'Int'
+      \ , 'getComputeFee(': 'Int'
+      \ , 'getStorageFee(': 'Int'
+      \ , 'getForwardFee(': 'Int'
+      \ , 'getSimpleComputeFee(': 'Int'
+      \ , 'getSimpleForwardFee(': 'Int'
+      \ , 'getOriginalFwdFee(': 'Int'
+      \ , 'myStorageDue()': 'Int'
+      \ , 'parseStdAddress(': 'StdAddress'
+      \ , 'parseVarAddress(': 'VarAddress'
+      \ , 'slice(': 'Slice'
+      \ , 'rawSlice(': 'Slice'
+      \ , 'ascii(': 'Int'
+      \ , 'crc32(': 'Int'
       \ }
 " }}}2
 
@@ -63,7 +79,11 @@ let s:tact_globals = {
       \ , 'SendDestroyIfZero': 'Int'
       \ , 'SendRemainingValue': 'Int'
       \ , 'SendRemainingBalance': 'Int'
-      \ , 'SendParameters{': ''
+      \ , 'SendOnlyEstimateFee': 'Int'
+      \ , 'SendParameters{': 'SendParameters'
+      \ , 'StateInit{': 'StateInit'
+      \ , 'StdAddress{': 'StdAddress'
+      \ , 'VarAddress{': 'VarAddress'
       \ , 'ReserveExact': 'Int'
       \ , 'ReserveAllExcept': 'Int'
       \ , 'ReserveAtMost': 'Int'
@@ -78,6 +98,8 @@ let s:tact_Map_methods = {
       \ , 'del(': ''
       \ , 'asCell()': 'Cell'
       \ , 'isEmpty(': 'Bool'
+      \ , 'exists(': 'Bool'
+      \ , 'deepEquals(': 'Bool'
       \ }
 
 let s:tact_Address_methods = {
@@ -108,11 +130,14 @@ let s:tact_Builder_methods = {
       \ 'endCell()': 'Cell'
       \ , 'storeUint(': 'Builder'
       \ , 'storeInt(': 'Builder'
+      \ , 'storeBit(': 'Builder'
       \ , 'storeBool(': 'Builder'
+      \ , 'storeBuilder(': 'Builder'
       \ , 'storeSlice(': 'Builder'
       \ , 'storeCoins(': 'Builder'
       \ , 'storeAddress(': 'Builder'
       \ , 'storeRef(': 'Builder'
+      \ , 'storeMaybeRef(': 'Builder'
       \ , 'refs()': 'Int'
       \ , 'bits()': 'Int'
       \ , 'asSlice()': 'Slice'
@@ -132,6 +157,8 @@ let s:tact_Slice_methods = {
       \ , 'preloadInt(': 'Int'
       \ , 'loadUint(': 'Int'
       \ , 'preloadUint(': 'Int'
+      \ , 'loadBit(': 'Bool'
+      \ , 'loadBool(': 'Bool'
       \ , 'loadBits(': 'Slice'
       \ , 'preloadBits(': 'Slice'
       \ , 'loadCoins()': 'Int'
@@ -792,7 +819,11 @@ function! s:GetTypeCompletionOptions(type_arr, messages, structs, extends_functi
     if has_key(a:messages, a:type_arr[1])
       " fields
       call extend(l:options, keys(a:messages[a:type_arr[1]]))
+      " special methods
       call add(l:options, 'toCell()')
+      call add(l:options, 'toSlice()')
+      call add(l:options, 'fromCell()')
+      call add(l:options, 'fromSlice()')
     endif
 
     " extension methods
@@ -838,12 +869,20 @@ function! s:GetTypeCompletionOptions(type_arr, messages, structs, extends_functi
       call extend(l:options, keys(a:messages[a:type_arr[0]]))
       " special methods
       call add(l:options, 'toCell()')
+      call add(l:options, 'toSlice()')
+      call add(l:options, 'fromCell()')
+      call add(l:options, 'fromSlice()')
     endif
 
     " struct
     if has_key(a:structs, a:type_arr[0])
       " fields
       call extend(l:options, keys(a:structs[a:type_arr[0]]))
+      " special methods
+      call add(l:options, 'toCell()')
+      call add(l:options, 'toSlice()')
+      call add(l:options, 'fromCell()')
+      call add(l:options, 'fromSlice()')
     endif
 
     " extension methods
