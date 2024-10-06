@@ -454,4 +454,4 @@ Built with 🤍 by [Novus Nota](https://github.com/novusnota).
 
 ## License
 
-Distributed under the same terms as Vim itself. See `:help license`.
+[MIT](LICENSE)
