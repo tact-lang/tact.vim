@@ -39,7 +39,10 @@ contract MyContract with MyTrait, Ownable? {
         self.owner = owner;
     }
     bounced(msg: bounced<MyMessage>) {}
-    external() {}
+    external() {
+        let normalId: Int = 0;
+        let remainingWhatever: Int = 0;
+    }
     receive() {}
     virtual fun overrideMe() {}
 }
