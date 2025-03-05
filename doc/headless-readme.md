@@ -20,6 +20,8 @@ Note, that you can [disable highlighting of identifiers](#highlighting), if you 
 
 ## Installation
 
+<!--
+
 ### First time in Vim 8+? Read this!
 
 <details>
@@ -108,7 +110,9 @@ Don't forget to restart Vim after :)
 
 </details>
 
-### Vundle
+-->
+
+### via Vundle
 
 <details>
 <summary>Click to see</summary>
@@ -132,7 +136,7 @@ Steps:
 
 </details>
 
-### vim-plug
+### via vim-plug
 
 <details>
 <summary>Click to see</summary>
@@ -156,7 +160,7 @@ Steps:
 
 </details>
 
-### lazy.nvim (Neovim-only)
+### via lazy.nvim (Neovim-only)
 
 <details>
 <summary>Click to see</summary>
@@ -178,6 +182,12 @@ Steps:
 2. Run `:Lazy`.
 
 </details>
+
+### Language Server
+
+In addition, it's strongly recommended that a Tact language server be installed and set up.
+
+Get an official one here: [tact-language-server](https://github.com/tact-lang/tact-language-server).
 
 ## Configuration
 
