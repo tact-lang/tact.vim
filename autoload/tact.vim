@@ -10,16 +10,25 @@
 
 " stdlib_functions {{{2
 let s:tact_stdlib_functions = {
-      \ 'send(SendParameters{': 'Int'
+      \ 'send(SendParameters{': ''
+      \ , 'message(MessageParameters{': ''
+      \ , 'deploy(DeployParameters{': ''
+      \ , 'cashback(': ''
       \ , 'sender()': 'Address'
       \ , 'require(': ''
       \ , 'now()': 'Int'
+      \ , 'curLt()': 'Int'
+      \ , 'blockLt()': 'Int'
       \ , 'address(': 'Address'
       \ , 'myBalance()': 'Int'
       \ , 'myAddress()': 'Address'
       \ , 'newAddress(': 'Address'
+      \ , 'emptyBasechainAddress()': 'BasechainAddress'
+      \ , 'newBasechainAddress(': 'BasechainAddress'
       \ , 'contractAddress(': 'Address'
+      \ , 'contractBasechainAddress(': 'BasechainAddress'
       \ , 'contractAddressExt(': 'Address'
+      \ , 'contractHash(': 'Int'
       \ , 'emit(': ''
       \ , 'cell(': 'Cell'
       \ , 'ton(': 'Int'
@@ -43,19 +52,29 @@ let s:tact_stdlib_functions = {
       \ , 'log2(': 'Int'
       \ , 'pow(': 'Int'
       \ , 'pow2(': 'Int'
+      \ , 'sign(': 'Int'
+      \ , 'sqrt(': 'Int'
+      \ , 'divc(': 'Int'
+      \ , 'muldivc(': 'Int'
+      \ , 'mulShiftRight(': 'Int'
+      \ , 'mulShiftRightRound(': 'Int'
+      \ , 'mulShiftRightCeil(': 'Int'
       \ , 'throw(': ''
-      \ , 'nativeThrowIf(': ''
-      \ , 'nativeThrowUnless(': ''
+      \ , 'throwIf(': ''
+      \ , 'throwUnless(': ''
       \ , 'getConfigParam(': 'Cell?'
       \ , 'nativeRandomize(': ''
       \ , 'nativeRandomizeLt()': ''
       \ , 'nativePrepareRandom(': ''
       \ , 'nativeRandom()': 'Int'
       \ , 'nativeRandomInterval(': 'Int'
+      \ , 'getSeed()': 'Int'
+      \ , 'setSeed(': ''
       \ , 'nativeReserve(': ''
       \ , 'nativeSendMessage(': ''
       \ , 'nativeSendMessageReturnForwardFee(': 'Int'
       \ , 'gasConsumed()': 'Int'
+      \ , 'setGasLimit(': ''
       \ , 'getComputeFee(': 'Int'
       \ , 'getStorageFee(': 'Int'
       \ , 'getForwardFee(': 'Int'
@@ -63,6 +82,7 @@ let s:tact_stdlib_functions = {
       \ , 'getSimpleForwardFee(': 'Int'
       \ , 'getOriginalFwdFee(': 'Int'
       \ , 'myStorageDue()': 'Int'
+      \ , 'myCode()': 'Cell'
       \ , 'parseStdAddress(': 'StdAddress'
       \ , 'parseVarAddress(': 'VarAddress'
       \ , 'slice(': 'Slice'
@@ -77,6 +97,7 @@ let s:tact_globals = {
       \ , 'SendIgnoreErrors': 'Int'
       \ , 'SendBounceIfActionFail': 'Int'
       \ , 'SendDestroyIfZero': 'Int'
+      \ , 'SendDefaultMode': 'Int'
       \ , 'SendRemainingValue': 'Int'
       \ , 'SendRemainingBalance': 'Int'
       \ , 'SendOnlyEstimateFee': 'Int'
@@ -84,6 +105,7 @@ let s:tact_globals = {
       \ , 'StateInit{': 'StateInit'
       \ , 'StdAddress{': 'StdAddress'
       \ , 'VarAddress{': 'VarAddress'
+      \ , 'BasechainAddress{': 'BasechainAddress'
       \ , 'ReserveExact': 'Int'
       \ , 'ReserveAllExcept': 'Int'
       \ , 'ReserveAtMost': 'Int'
@@ -95,7 +117,9 @@ let s:tact_globals = {
 let s:tact_Map_methods = {
       \ 'get(': ''
       \ , 'set(': ''
-      \ , 'del(': ''
+      \ , 'replace(': 'Bool'
+      \ , 'replaceGet(': ''
+      \ , 'del(': 'Bool'
       \ , 'asCell()': 'Cell'
       \ , 'isEmpty(': 'Bool'
       \ , 'exists(': 'Bool'
@@ -117,6 +141,7 @@ let s:tact_StringBuilder_methods = {
 let s:tact_String_methods = {
       \ 'asComment()': 'Cell'
       \ , 'asSlice()': 'Slice'
+      \ , 'hashData()': 'Int'
       \ , 'fromBase64()': 'Slice'
       \ }
 
@@ -135,17 +160,25 @@ let s:tact_Builder_methods = {
       \ , 'storeBuilder(': 'Builder'
       \ , 'storeSlice(': 'Builder'
       \ , 'storeCoins(': 'Builder'
+      \ , 'storeVarUint16(': 'Builder'
+      \ , 'storeVarUint32(': 'Builder'
+      \ , 'storeVarInt16(': 'Builder'
+      \ , 'storeVarInt32(': 'Builder'
       \ , 'storeAddress(': 'Builder'
       \ , 'storeRef(': 'Builder'
       \ , 'storeMaybeRef(': 'Builder'
+      \ , 'storeBasechainAddress(': 'Builder'
       \ , 'refs()': 'Int'
       \ , 'bits()': 'Int'
+      \ , 'depth()': 'Int'
       \ , 'asSlice()': 'Slice'
       \ , 'asCell()': 'Cell'
       \ }
 
 let s:tact_Cell_methods = {
       \ 'beginParse()': 'Slice'
+      \ , 'depth()': 'Int'
+      \ , 'computeDataSize()': 'Int'
       \ , 'hash()': 'Int'
       \ , 'asSlice()': 'Slice'
       \ }
@@ -161,16 +194,32 @@ let s:tact_Slice_methods = {
       \ , 'loadBool(': 'Bool'
       \ , 'loadBits(': 'Slice'
       \ , 'preloadBits(': 'Slice'
+      \ , 'skipBits(': ''
+      \ , 'skipLastBits(': ''
+      \ , 'firstBits(': 'Slice'
+      \ , 'lastBits(': 'Slice'
       \ , 'loadCoins()': 'Int'
+      \ , 'loadVarUint16(': 'Int'
+      \ , 'loadVarUint32(': 'Int'
+      \ , 'loadVarInt16(': 'Int'
+      \ , 'loadVarInt32(': 'Int'
       \ , 'loadAddress(': 'Address'
       \ , 'loadRef()': 'Cell'
+      \ , 'preloadRef()': 'Cell'
+      \ , 'loadMaybeRef()': 'Cell?'
+      \ , 'preloadMaybeRef()': 'Cell?'
       \ , 'refs()': 'Int'
       \ , 'bits()': 'Int'
+      \ , 'depth()': 'Int'
       \ , 'empty()': 'Bool'
       \ , 'dataEmpty()': 'Bool'
       \ , 'refsEmpty()': 'Bool'
+      \ , 'computeDataSize()': 'Int'
       \ , 'hash()': 'Int'
+      \ , 'hashData()': 'Int'
       \ , 'asCell()': 'Cell'
+      \ , 'asAddress()': 'Address'
+      \ , 'asAddressUnsafe()': 'Address'
       \ }
 
 let s:tact_stdlib_deploy = [
@@ -245,6 +294,7 @@ let s:tact_types = [
 " NOTE: Pre-computed the values, because producing them on the fly isn't very convenient in VimScript
 let s:tact_native_types = [
       \ 'int257', 'coins', 'remaining', 'bytes32', 'bytes64'
+      \ , 'varuint16', 'varuint32', 'varint16', 'varint32'
       \ , 'int1', 'int2', 'int3', 'int4', 'int5', 'int6', 'int7', 'int8'
       \ , 'int9', 'int10', 'int11', 'int12', 'int13', 'int14', 'int15', 'int16'
       \ , 'int17', 'int18', 'int19', 'int20', 'int21', 'int22', 'int23', 'int24'
@@ -2093,6 +2143,15 @@ function! tact#Complete(findstart, base) abort
           " it is the incomplete field definition, so skip it and move to the next line
           continue
         endif
+
+        " TODO: can try add parsing for contract parameters on the same line
+        "       but: a) it's not a frequent case and b) this is a very brittle
+        "       parsing-ish approach, and I'd better just either rewrite this
+        "       as a top-down parser generated from the grammar.gg definition
+        "       or simply leave things as is for the time being.
+        "
+        "       if anything — there's a smarter LS that supports way more edge-cases.
+        "       see: https://github.com/tact-lang/tact-language-server
 
         " parsing a field
         if l:buf_line =~# '^\%(const\s\+\)\?\w\+\s*:'
