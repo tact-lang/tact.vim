@@ -109,7 +109,7 @@ syn keyword tactType
     \ Int Bool Address Slice Cell Builder String StringBuilder
 syn match tactNativeType "\%(as\s\+\)\@<=\%(coins\|varu\?int\%(32\|16\)\|remaining\|bytes\%(32\|64\)\|int257\|u\?int\%(25[0-6]\|2[0-4][0-9]\|1\d\d\|[1-9]\d\?\)\)\>"
 syn match tactGenericType
-    \ "\<\(map\|bounced\)\><\@=" nextgroup=tactGenericTypeBounds skipwhite
+    \ "\<\(map\|bounced\|set\)\><\@=" nextgroup=tactGenericTypeBounds skipwhite
 syn region tactGenericTypeBounds
     \ contained matchgroup=tactGenericTypeParens
     \ start="<" end=">" keepend skipwhite skipempty
