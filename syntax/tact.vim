@@ -70,11 +70,14 @@ syn match tactOperator "\^"
 syn match tactOperator "\^="
 syn keyword tactKeyword
     \ as const let fun native primitive public extend self with in
-    \ get abstract virtual override extends mutates inline initOf codeOf
-syn match tactKeyword "\<contract\>:\@!"
-syn match tactKeyword "\<message\>:\@!"
-syn match tactKeyword "\<struct\>:\@!"
-syn match tactKeyword "\<trait\>:\@!"
+    \ get abstract virtual override extends mutates inline
+syn keyword tactKeyword
+    \ initOf codeOf
+    \ nextgroup=tactStructure skipwhite
+syn match tactKeyword "\<message\>\%(\s*\%(:\|(\s*M\|(\s*)\)\)\@!" nextgroup=tactStructure skipwhite
+syn match tactKeyword "\<struct\>:\@!" nextgroup=tactStructure skipwhite
+syn match tactKeyword "\<contract\>:\@!" nextgroup=tactStructure skipwhite
+syn match tactKeyword "\<trait\>:\@!" nextgroup=tactStructure skipwhite
 
 " Imports & Bindings to FunC or Fift assembly
 syn keyword tactImport import
