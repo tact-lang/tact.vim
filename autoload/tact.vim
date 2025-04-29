@@ -14,51 +14,78 @@ let s:tact_stdlib_functions = {
       \ , 'message(MessageParameters{': ''
       \ , 'deploy(DeployParameters{': ''
       \ , 'cashback(': ''
-      \ , 'sender()': 'Address'
-      \ , 'require(': ''
+      \ , 'emit(': ''
+      \ , 'sendRawMessage(': ''
+      \ , 'sendRawMessageReturnForwardFee(': 'Int'
+      \
       \ , 'now()': 'Int'
       \ , 'curLt()': 'Int'
       \ , 'blockLt()': 'Int'
+      \ , 'sender()': 'Address'
       \ , 'inMsg()': 'Slice'
       \ , 'context()': 'Context'
-      \ , 'address(': 'Address'
-      \ , 'myBalance()': 'Int'
       \ , 'myAddress()': 'Address'
-      \ , 'acceptMessage()': ''
+      \ , 'myCode()': 'Cell'
+      \ , 'myStorageDue()': 'Int'
+      \ , 'myBalance()': 'Int'
+      \ , 'gasConsumed()': 'Int'
+      \ , 'nativeReserve(': ''
       \ , 'commit()': ''
+      \ , 'getConfigParam(': 'Cell?'
+      \
+      \ , 'address(': 'Address'
+      \ , 'cell(': 'Cell'
+      \ , 'slice(': 'Slice'
+      \ , 'rawSlice(': 'Slice'
+      \ , 'ascii(': 'Int'
+      \ , 'crc32(': 'Int'
+      \ , 'ton(': 'Int'
+      \
+      \ , 'beginCell()': 'Builder'
+      \ , 'emptyCell()': 'Cell'
+      \ , 'emptySlice()': 'Slice'
+      \
       \ , 'newAddress(': 'Address'
-      \ , 'emptyBasechainAddress()': 'BasechainAddress'
-      \ , 'newBasechainAddress(': 'BasechainAddress'
       \ , 'contractAddress(': 'Address'
-      \ , 'contractBasechainAddress(': 'BasechainAddress'
       \ , 'contractAddressExt(': 'Address'
       \ , 'contractHash(': 'Int'
       \ , 'forceBasechain(': ''
       \ , 'forceWorkchain(': ''
-      \ , 'emit(': ''
-      \ , 'cell(': 'Cell'
-      \ , 'ton(': 'Int'
-      \ , 'dump(': ''
-      \ , 'dumpStack()': ''
+      \ , 'parseStdAddress(': 'StdAddress'
+      \ , 'parseVarAddress(': 'VarAddress'
+      \ , 'emptyBasechainAddress()': 'BasechainAddress'
+      \ , 'newBasechainAddress(': 'BasechainAddress'
+      \ , 'contractBasechainAddress(': 'BasechainAddress'
+      \
       \ , 'beginString()': 'StringBuilder'
       \ , 'beginComment()': 'StringBuilder'
       \ , 'beginTailString()': 'StringBuilder'
       \ , 'beginStringFromBuilder(': 'StringBuilder'
-      \ , 'beginCell()': 'Builder'
-      \ , 'emptyCell()': 'Cell'
-      \ , 'randomInt()': 'Int'
-      \ , 'random(': 'Int'
+      \
+      \ , 'require(': ''
+      \ , 'dump(': ''
+      \ , 'dumpStack()': ''
+      \ , 'throw(': ''
+      \ , 'throwIf(': ''
+      \ , 'throwUnless(': ''
+      \
+      \ , 'getStorageFee(': 'Int'
+      \ , 'getComputeFee(': 'Int'
+      \ , 'getSimpleComputeFee(': 'Int'
+      \ , 'getForwardFee(': 'Int'
+      \ , 'getSimpleForwardFee(': 'Int'
+      \ , 'getOriginalFwdFee(': 'Int'
+      \ , 'setGasLimit(': ''
+      \ , 'acceptMessage()': ''
+      \
       \ , 'checkSignature(': 'Bool'
       \ , 'checkDataSignature(': 'Bool'
       \ , 'sha256(': 'Int'
       \ , 'keccak256(': 'Int'
+      \
       \ , 'min(': 'Int'
       \ , 'max(': 'Int'
       \ , 'abs(': 'Int'
-      \ , 'log(': 'Int'
-      \ , 'log2(': 'Int'
-      \ , 'pow(': 'Int'
-      \ , 'pow2(': 'Int'
       \ , 'sign(': 'Int'
       \ , 'sqrt(': 'Int'
       \ , 'divc(': 'Int'
@@ -66,36 +93,22 @@ let s:tact_stdlib_functions = {
       \ , 'mulShiftRight(': 'Int'
       \ , 'mulShiftRightRound(': 'Int'
       \ , 'mulShiftRightCeil(': 'Int'
-      \ , 'throw(': ''
-      \ , 'throwIf(': ''
-      \ , 'throwUnless(': ''
-      \ , 'getConfigParam(': 'Cell?'
-      \ , 'nativeRandomize(': ''
-      \ , 'nativeRandomizeLt()': ''
-      \ , 'nativePrepareRandom(': ''
-      \ , 'nativeRandom()': 'Int'
-      \ , 'nativeRandomInterval(': 'Int'
+      \ , 'log(': 'Int'
+      \ , 'log2(': 'Int'
+      \ , 'pow(': 'Int'
+      \ , 'pow2(': 'Int'
+      \
+      \ , 'random(': 'Int'
+      \ , 'randomInt()': 'Int'
       \ , 'getSeed()': 'Int'
       \ , 'setSeed(': ''
-      \ , 'nativeReserve(': ''
-      \ , 'nativeSendMessage(': ''
-      \ , 'nativeSendMessageReturnForwardFee(': 'Int'
-      \ , 'gasConsumed()': 'Int'
-      \ , 'setGasLimit(': ''
-      \ , 'getComputeFee(': 'Int'
-      \ , 'getStorageFee(': 'Int'
-      \ , 'getForwardFee(': 'Int'
-      \ , 'getSimpleComputeFee(': 'Int'
-      \ , 'getSimpleForwardFee(': 'Int'
-      \ , 'getOriginalFwdFee(': 'Int'
-      \ , 'myStorageDue()': 'Int'
-      \ , 'myCode()': 'Cell'
-      \ , 'parseStdAddress(': 'StdAddress'
-      \ , 'parseVarAddress(': 'VarAddress'
-      \ , 'slice(': 'Slice'
-      \ , 'rawSlice(': 'Slice'
-      \ , 'ascii(': 'Int'
-      \ , 'crc32(': 'Int'
+      \ , 'nativePrepareRandom(': ''
+      \ , 'nativeRandomize(': ''
+      \ , 'nativeRandomizeLt()': ''
+      \ , 'nativeRandom()': 'Int'
+      \ , 'nativeRandomInterval(': 'Int'
+      \
+      \ , 'emptyMap()': 'null'
       \ }
 " }}}2
 
@@ -147,7 +160,8 @@ let s:tact_Map_methods = {
       \ }
 
 let s:tact_Address_methods = {
-      \ 'toString(': 'String'
+      \ 'toString()': 'String'
+      \ , 'asSlice()': 'Slice'
       \ }
 
 let s:tact_StringBuilder_methods = {
@@ -185,9 +199,9 @@ let s:tact_Builder_methods = {
       \ , 'storeVarInt16(': 'Builder'
       \ , 'storeVarInt32(': 'Builder'
       \ , 'storeAddress(': 'Builder'
+      \ , 'storeBasechainAddress(': 'Builder'
       \ , 'storeRef(': 'Builder'
       \ , 'storeMaybeRef(': 'Builder'
-      \ , 'storeBasechainAddress(': 'Builder'
       \ , 'refs()': 'Int'
       \ , 'bits()': 'Int'
       \ , 'depth()': 'Int'
@@ -204,21 +218,17 @@ let s:tact_Cell_methods = {
       \ }
 
 let s:tact_Slice_methods = {
-      \ 'asString()': 'String'
-      \ , 'fromBase64()': 'Slice'
+      \ 'loadUint(': 'Int'
+      \ , 'preloadUint(': 'Int'
       \ , 'loadInt(': 'Int'
       \ , 'preloadInt(': 'Int'
-      \ , 'loadUint(': 'Int'
-      \ , 'preloadUint(': 'Int'
-      \ , 'loadBit(': 'Bool'
-      \ , 'loadBool(': 'Bool'
-      \ , 'skipBool(': ''
       \ , 'loadBits(': 'Slice'
       \ , 'preloadBits(': 'Slice'
       \ , 'skipBits(': ''
       \ , 'skipLastBits(': ''
-      \ , 'firstBits(': 'Slice'
-      \ , 'lastBits(': 'Slice'
+      \ , 'loadBool(': 'Bool'
+      \ , 'skipBool(': ''
+      \ , 'loadBit(': 'Bool'
       \ , 'loadCoins()': 'Int'
       \ , 'skipCoins(': ''
       \ , 'loadVarUint16(': 'Int'
@@ -239,20 +249,42 @@ let s:tact_Slice_methods = {
       \ , 'skipMaybeRef(': ''
       \ , 'refs()': 'Int'
       \ , 'bits()': 'Int'
+      \ , 'firstBits(': 'Slice'
+      \ , 'lastBits(': 'Slice'
       \ , 'depth()': 'Int'
+      \ , 'computeDataSize()': 'Int'
       \ , 'empty()': 'Bool'
       \ , 'dataEmpty()': 'Bool'
       \ , 'refsEmpty()': 'Bool'
-      \ , 'computeDataSize()': 'Int'
       \ , 'hash()': 'Int'
       \ , 'hashData()': 'Int'
       \ , 'asCell()': 'Cell'
+      \ , 'asString()': 'String'
+      \ , 'fromBase64()': 'Slice'
       \ , 'asAddress()': 'Address'
       \ , 'asAddressUnsafe()': 'Address'
       \ }
 
+let s:tact_StateInit_methods = {
+      \ 'hasSameBasechainAddress(': 'Bool'
+      \ }
+
+let s:tact_Context_methods = {
+      \ 'readForwardFee()': 'Int'
+      \ }
+
+let s:tact_SignedBundle_methods = {
+      \ 'verifySignature(': 'Bool'
+      \ }
+
+let s:tact_structure_methods = {
+      \ 'toCell()': 'Cell'
+      \ , 'toSlice()': 'Slice'
+      \ }
+
 let s:tact_stdlib_deploy = [
       \ 'Deployable'
+      \ , 'FactoryDeployable'
       \ ]
 
 let s:tact_stdlib_dns = [
@@ -317,7 +349,7 @@ let s:tact_abbrev_method = [
 
 let s:tact_types = [
       \ 'Int', 'Bool', 'Address', 'Slice', 'Cell', 'Builder', 'String', 'StringBuilder'
-      \ , 'map<', 'bounced<'
+      \ , 'map<', 'bounced<', 'set<'
       \ ]
 
 " NOTE: Pre-computed the values, because producing them on the fly isn't very convenient in VimScript
@@ -408,6 +440,11 @@ let s:regexp_map_no_right_angle_bracket = '\<map\s*<\s*'
       \ . '\s*'
       \ . s:regexp_type_as
       \ . '\s*'
+let s:regexp_set_no_right_angle_bracket = '\<set\s*<\s*'
+      \ . s:regexp_type_literal
+      \ . '\s*'
+      \ . s:regexp_type_as
+      \ . '\s*,\?\s*'
 let s:regexp_bounced_no_right_angle_bracket = '\<bounced\s*<\s*' . s:regexp_type_literal . '\s*'
 let s:regexp_number_literal = '\%(([\d_]\+)\|(0[xX][\x_]\+)\|(0[oO][\o_]\+)\|(0[bB][01_]\+)\)'
 
@@ -429,6 +466,9 @@ function! s:DotFallbackComplete(base, extends, structs, messages)
         \ + keys(s:tact_Int_methods)
         \ + keys(s:tact_String_methods)
         \ + keys(s:tact_StringBuilder_methods)
+        \ + keys(s:tact_StateInit_methods)
+        \ + keys(s:tact_Context_methods)
+        \ + keys(s:tact_SignedBundle_methods)
 
   " find fields from structs
   for item in values(a:structs)
@@ -776,6 +816,15 @@ function! s:RecognizeTypeAsList(str, regexp_start, regexp_end)
     return l:result_arr
   endif
 
+  " match set
+  silent! call substitute(a:str,
+        \ a:regexp_start . ':\s*\(' . s:regexp_set_no_right_angle_bracket . '\)>\s*' . s:regexp_type_as . '\s*' . a:regexp_end,
+        \ '\=add(l:result_arr,submatch(1))',
+        \ '')
+  if !empty(l:result_arr)
+    return l:result_arr
+  endif
+
   " match bounced
   silent! call substitute(a:str,
         \ a:regexp_start . ':\s*\(' . s:regexp_bounced_no_right_angle_bracket . '\)>\s*' . s:regexp_type_as . '\s*' . a:regexp_end,
@@ -828,6 +877,27 @@ function! s:ParseTypeIntoList(lnum, name, type) abort
     return [l:compound_name, l:type_name]
   endif
 
+  " set
+  if a:type =~# '^set\>'
+    " can split by <
+    let l:split_by_left_angle_bracket = split(a:type, '<')
+    if len(l:split_by_left_angle_bracket) != 2
+      call s:ErrorMsg('Invalid syntax of set type for ' . a:name . ' on line ' . a:lnum)
+      return []
+    endif
+
+    let l:compound_name = trim(l:split_by_left_angle_bracket[0])
+    let l:type_name = substitute(trim(l:split_by_left_angle_bracket[1]), '^\(\w\+?\?\).*', '\1', '')
+
+    " if any of values is empty -- report error
+    if empty(l:compound_name) || empty(l:type_name)
+      call s:ErrorMsg('Invalid syntax of set type for ' . a:name . ' on line ' . a:lnum)
+      return []
+    endif
+
+    return [l:compound_name, l:type_name]
+  endif
+
   " map
   if a:type =~# '^map\>'
     " can split by ,
@@ -857,7 +927,7 @@ function! s:ParseTypeIntoList(lnum, name, type) abort
     return [l:compound_name, l:key_type, l:value_type]
   endif
 
-  " not a map/bounced type
+  " not a map/set/bounced type
   return [substitute(a:type, '^\(\w\+?\?\).*', '\1', '')]
   " }}}2
 endfunction
@@ -887,6 +957,13 @@ function! s:GetTypeCompletionOptions(type_arr, messages, structs, extends_functi
     return l:options
   endif
 
+  " must be a set<type>
+  if len(a:type_arr) == 2 && a:type_arr[0] ==# 'set'
+    let l:options = []
+    " NOTE: set type doesn't have any methods, yet
+    return l:options
+  endif
+
   " must be a bounced<msg type>
   if len(a:type_arr) == 2
     if a:type_arr[0] !=# 'bounced'
@@ -898,11 +975,7 @@ function! s:GetTypeCompletionOptions(type_arr, messages, structs, extends_functi
     if has_key(a:messages, a:type_arr[1])
       " fields
       call extend(l:options, keys(a:messages[a:type_arr[1]]))
-      " special methods
-      call add(l:options, 'toCell()')
-      call add(l:options, 'toSlice()')
-      call add(l:options, 'fromCell()')
-      call add(l:options, 'fromSlice()')
+      call extend(l:options, keys(s:tact_structure_methods))
     endif
 
     " extension methods
@@ -940,28 +1013,26 @@ function! s:GetTypeCompletionOptions(type_arr, messages, structs, extends_functi
       call extend(l:options, keys(s:tact_StringBuilder_methods))
     elseif a:type_arr[0] ==# 'Address'
       call extend(l:options, keys(s:tact_Address_methods))
+    elseif a:type_arr[0] ==# 'StateInit'
+      call extend(l:options, keys(s:tact_StateInit_methods))
+    elseif a:type_arr[0] ==# 'Context'
+      call extend(l:options, keys(s:tact_Context_methods))
+    elseif a:type_arr[0] ==# 'SignedBundle'
+      call extend(l:options, keys(s:tact_SignedBundle_methods))
     endif
 
     " message
     if has_key(a:messages, a:type_arr[0])
       " fields
       call extend(l:options, keys(a:messages[a:type_arr[0]]))
-      " special methods
-      call add(l:options, 'toCell()')
-      call add(l:options, 'toSlice()')
-      call add(l:options, 'fromCell()')
-      call add(l:options, 'fromSlice()')
+      call extend(l:options, keys(s:tact_structure_methods))
     endif
 
     " struct
     if has_key(a:structs, a:type_arr[0])
       " fields
       call extend(l:options, keys(a:structs[a:type_arr[0]]))
-      " special methods
-      call add(l:options, 'toCell()')
-      call add(l:options, 'toSlice()')
-      call add(l:options, 'fromCell()')
-      call add(l:options, 'fromSlice()')
+      call extend(l:options, keys(s:tact_structure_methods))
     endif
 
     " extension methods
@@ -2956,6 +3027,42 @@ function! tact#Complete(findstart, base) abort
       return s:FallbackComplete(a:findstart, a:base)
     endif
 
+    " static method completion options
+    let l:static_compl = []
+
+    " static methods of structs
+    for item in keys(l:buf_structs)
+      if item ==# l:identifier_name_arr[0]
+        call add(l:static_compl, 'fromCell(')
+        call add(l:static_compl, 'fromSlice(')
+      endif
+    endfor
+
+    " static methods of structs
+    for item in keys(l:buf_messages)
+      if item ==# l:identifier_name_arr[0]
+        call add(l:static_compl, 'fromCell(')
+        call add(l:static_compl, 'fromSlice(')
+        call add(l:static_compl, 'opcode()')
+      endif
+    endfor
+
+    " completion list
+    let l:compl = []
+
+    " match on the static methods
+    for item in l:static_compl
+      if item =~ '\V' . a:base
+        call add(l:compl, item)
+      endif
+    endfor
+
+    " if any were found, let's show them
+    if !empty(l:type_arr)
+      return l:compl
+    endif
+
+    " if none were found, let's try to infer the type
     " type to find completions for
     let l:type_arr = []
 
@@ -2983,7 +3090,6 @@ function! tact#Complete(findstart, base) abort
           \ l:buf_structs,
           \ l:buf_extends_functions,
           \ l:buf_extends_functions_returns)
-    let l:compl = []
 
     " fill the list of matching options
     for item in l:options
