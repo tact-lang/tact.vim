@@ -1,3 +1,7 @@
+> [!CAUTION]
+> This project is deprecated. For up-to-date tools for TON contract development, see
+> [IDEs and editor plugins](https://docs.ton.org/contracts/overview#ides-and-editor-plugins).
+
 # tact.vim
 
 <center>
