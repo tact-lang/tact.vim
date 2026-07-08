@@ -1,4 +1,5 @@
-*tact.txt*      For Vim 8+ and Neovim >= 0.10.0     Last change: 2025 March 05
+*tact.txt*
+                  For Vim 8+ and Neovim >= 0.10.0    Last change: 2026 July 08
 
 ==============================================================================
 Table of Contents                                     *tact-table-of-contents*
@@ -46,7 +47,7 @@ Click to see ~
 Info about it: Vundle repository <https://github.com/VundleVim/Vundle.vim>.
 
 Steps: 1. Add `tact.vim` to your plugin list in `~/.vimrc` (or `~/_vimrc` on
-Windows) by inserting the line that starts with `Plugin`
+Windows) by inserting the line that starts with `Plugin`:
 
 >vim
     call vundle#begin()
@@ -56,7 +57,7 @@ Windows) by inserting the line that starts with `Plugin`
     call vundle#end()
 <
 
-1. RestartVim or run `:source ~/.vimrc`.
+1. Restart Vim or run `:source ~/.vimrc`.
 2. Run `:PluginInstall`.
 
 
@@ -67,7 +68,7 @@ Click to see ~
 Info about it: vim-plug repository <https://github.com/junegunn/vim-plug>.
 
 Steps: 1. Add `tact.vim` to your plugin list in `~/.vimrc` (or `~/_vimrc` on
-Windows) by inserting the line that starts with `Plug`
+Windows) by inserting the line that starts with `Plug`:
 
 >vim
     call plug#begin()
@@ -77,7 +78,7 @@ Windows) by inserting the line that starts with `Plug`
     call plug#end()
 <
 
-1. RestartVim or run `:source ~/.vimrc`.
+1. Restart Vim or run `:source ~/.vimrc`.
 2. Run `:PlugInstall`.
 
 
@@ -125,7 +126,7 @@ To prevent that behavior, you may want to bind the completion features of this
 plugin to a `competefunc` option (which is quite conveniently triggered by
 CTRL-xCTRL-u in INSERT mode). Add the following to your `~/.vimrc` (or
 `~/_vimrc` on Windows) if you’d like to prefer and bind `completefunc` over
-`omnifunc`
+`omnifunc`:
 
 >vim
     " CTRL-x CTRL-u instead of CTRL-x CTRL-o
@@ -138,7 +139,7 @@ Neovim-only ~
     vim.g.tact_prefer_completefunc = 1
 <
 
-Alternatively,add the following to the `init` key of your `lazy.nvim` config:
+Alternatively, add the following to the `init` key of your `lazy.nvim` config:
 
 >lua
     require('lazy').setup({
@@ -386,7 +387,7 @@ command to work.
 It’s generally recommended that you go over the example
 <https://docs.tact-lang.org/start#getting-started-from-scratch>, which shows
 how to get started with Tact. Alternatively, use the official project template
-<https://github.com/tact-lang/tact-template>either copy it or create a new
+<https://github.com/tact-lang/tact-template>: either copy it or create a new
 repository based on it.
 
 We wish you good luck and fun exploring Tact!
